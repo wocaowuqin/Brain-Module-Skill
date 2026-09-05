@@ -1,0 +1,305 @@
+version: 1
+
+presets:
+  multiagent-orchestration-check:
+    category: orchestration
+    description: Check central-brain dispatch, role-scoped skills, HRL mapping, and safe reconfiguration.
+    risk: read_only
+    command:
+      - "{python}"
+      - scripts/check_multiagent_orchestration.py
+    required_paths:
+      - scripts/check_multiagent_orchestration.py
+      - configs/multiagent_orchestration.yaml
+      - core/marl/orchestration/orchestrator.py
+
+  hrl-smoke:
+    category: hrl
+    description: Run a bounded CPU-only Phase 3 HRL integration smoke test.
+    risk: compute
+    command:
+      - "{python}"
+      - train_tahrl.py
+      - --phase
+      - phase3
+      - --data
+      - data/hrl/us_backbone_rate24/phase3_requests_20ep.pkl
+      - --max_requests
+      - "20"
+      - --output_dir
+      - artifacts/runs/hrl/smoke
+      - --topo
+      - us_backbone
+      - --gpu
+      - "-1"
+      - --torch_threads
+      - "1"
+      - --quiet
+      - --no_il
+      - --disable-checkpoint
+    required_paths:
+      - train_tahrl.py
+      - configs/phase3.yaml
+      - data/hrl/us_backbone_rate24/phase3_requests_20ep.pkl
+    required_modules:
+      - numpy
+      - scipy
+      - torch
+      - torch_geometric
+      - yaml
+
+  hrl-rate24-resume:
+    category: hrl
+    description: Continue the current full HRL checkpoint on the complete rate-24 trace.
+    risk: compute
+    command:
+      - "{python}"
+      - train_tahrl.py
+      - --phase
+      - phase3
+      - --data
+      - data/hrl/us_backbone_rate24/phase3_requests.pkl
+      - --output_dir
+      - artifacts/runs/hrl/rate24_resume
+      - --topo
+      - us_backbone
+      - --resume
+      - artifacts/reference_runs/hrl/rate24_full_current/final_model.pth
+      - --gpu
+      - "0"
+      - --torch_threads
+      - "1"
+    required_paths:
+      - train_tahrl.py
+      - configs/phase3.yaml
+      - data/hrl/us_backbone_rate24/phase3_requests.pkl
+      - artifacts/reference_runs/hrl/rate24_full_current/final_model.pth
+    required_modules:
+      - numpy
+      - scipy
+      - torch
+      - torch_geometric
+      - yaml
+
+  deployment-eval:
+    category: deployment
+    description: Evaluate the current deployment WQMIX checkpoint and common baselines.
+    risk: compute
+    command:
+      - "{python}"
+      - scripts/eval_deployment_baselines.py
+      - --data
+      - data/deployment_v4_tree_bw_rate24_sla80/test/seed_7301/mb5ms
+      - --checkpoint
+      - wqmix=artifacts/reference_runs/deployment/deployment_wqmix_v4_tree_bw_rate24_sla80_ep5/wqmix_final.pt
+      - --output
+      - artifacts/runs/deployment/eval_seed7301
+      - --device
+      - cpu
+    required_paths:
+      - scripts/eval_deployment_baselines.py
+      - data/deployment_v4_tree_bw_rate24_sla80/test/seed_7301/mb5ms/batches.jsonl
+      - artifacts/reference_runs/deployment/deployment_wqmix_v4_tree_bw_rate24_sla80_ep5/wqmix_final.pt
+    required_modules:
+      - numpy
+      - scipy
+      - torch
+
+  migration-check:
+    category: migration
+    description: Smoke-test heuristic, BC, IDQN, QMIX, WQMIX, MAPPO, and MILP migration paths.
+    risk: compute
+    command:
+      - "{python}"
+      - scripts/check_migration_baselines.py
+      - --data
+      - data/migration_wqmix_smoke_seed7071
+      - --output
+      - artifacts/runs/migration/baseline_check.json
+      - --device
+      - cpu
+    required_paths:
+      - scripts/check_migration_baselines.py
+      - data/migration_wqmix_smoke_seed7071/batches.jsonl
+    required_modules:
+      - numpy
+      - scipy
+      - torch
+
+  simulation-smoke:
+    category: simulation
+    description: Run the first 100 requests through the lifecycle-aware pure simulator.
+    risk: compute
+    command:
+      - "{python}"
+      - scripts/run_pure_sfc_simulation.py
+      - --requests
+      - data/deployment_v4_tree_bw_rate24_sla80/traces/seed_7301/requests.jsonl
+      - --profile
+      - sdn/topologies/us_backbone_28_bw90.json
+      - --output-dir
+      - artifacts/runs/simulation/seed7301_first100
+      - --max-requests
+      - "100"
+      - --top-k
+      - "8"
+      - --sla-admission-mode
+      - hard
+    required_paths:
+      - scripts/run_pure_sfc_simulation.py
+      - data/deployment_v4_tree_bw_rate24_sla80/traces/seed_7301/requests.jsonl
+      - sdn/topologies/us_backbone_28_bw90.json
+    required_modules:
+      - networkx
+      - torch
+
+  mininet-testbed-smoke:
+    category: mininet
+    description: Start the WSL Ryu/OVS services and run the Mininet connectivity smoke test.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/check_sdn_testbed.py
+      - --distro
+      - Ubuntu-22.04
+      - --timeout
+      - "15"
+      - --smoke
+    required_paths:
+      - scripts/check_sdn_testbed.py
+      - sdn/smoke_test.sh
+
+  mininet-cogentco-data-plane:
+    category: mininet
+    description: Validate multicast cutover and packet delivery on the full Cogentco topology.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/test_cogentco_data_plane.py
+      - --timeout
+      - "360"
+      - --switch-start-delay
+      - "0.2"
+      - --traffic-seconds
+      - "8"
+      - --output
+      - artifacts/runs/mininet/cogentco_data_plane/result.json
+    required_paths:
+      - scripts/test_cogentco_data_plane.py
+      - sdn/topologies/cogentco_197.json
+    required_modules:
+      - networkx
+
+  mininet-sft-multihop:
+    category: mininet
+    description: Exercise a multi-hop multicast SFT and live branch reroute.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/test_sft_multihop.py
+    required_paths:
+      - scripts/test_sft_multihop.py
+      - sdn/diamond_topology.py
+
+  mininet-sft-group:
+    category: mininet
+    description: Verify SFT group installation and replacement through the Ryu REST API.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/test_sft_controller.py
+    required_paths:
+      - scripts/test_sft_controller.py
+
+  mininet-cogentco-validate:
+    category: mininet
+    description: Validate Cogentco switch and fixed-port topology construction without hosts.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/test_us_backbone_topology.py
+      - --profile
+      - sdn/topologies/cogentco_197.json
+      - --topo
+      - cogentco
+      - --timeout
+      - "300"
+      - --switch-start-delay
+      - "0.2"
+      - --link-mode
+      - basic
+      - --no-hosts
+      - --controller-service
+      - ryu-sft-static-controller.service
+      - --stats-interval
+      - "5"
+    required_paths:
+      - scripts/test_us_backbone_topology.py
+      - sdn/topologies/cogentco_197.json
+      - sdn/real_topology.py
+
+  mininet-us-validate:
+    category: mininet
+    description: Validate the retained US-backbone switch and port profile in Mininet.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/test_us_backbone_topology.py
+    required_paths:
+      - scripts/test_us_backbone_topology.py
+      - sdn/topologies/us_backbone_28.json
+      - sdn/real_topology.py
+
+  mininet-sfc-smoke:
+    category: mininet
+    description: Deploy and measure one retained HRL SFC plan in the real Ryu/Mininet pipeline.
+    risk: system
+    platforms:
+      - windows
+    command:
+      - "{python}"
+      - scripts/run_sdn_runtime_requests.py
+      - --requests
+      - data/sdn_runtime_requests/seed_7071_rate24_duration100_lifetime50node/requests.jsonl
+      - --sfc-plans
+      - artifacts/plans/hrl_seed7071_rate24/plans_first100.jsonl
+      - --profile
+      - sdn/topologies/us_backbone_28_bw90.json
+      - --output
+      - artifacts/runs/mininet/sfc_smoke/result.json
+      - --max-requests
+      - "1"
+      - --time-scale
+      - "1"
+      - --timeout
+      - "90"
+      - --probe-result-timeout
+      - "20"
+      - --probe-launch-mode
+      - agent
+      - --vnf-launch-mode
+      - agent
+      - --deployment-workers
+      - "1"
+      - --cleanup-workers
+      - "1"
+    required_paths:
+      - scripts/run_sdn_runtime_requests.py
+      - data/sdn_runtime_requests/seed_7071_rate24_duration100_lifetime50node/requests.jsonl
+      - artifacts/plans/hrl_seed7071_rate24/plans_first100.jsonl
+      - sdn/topologies/us_backbone_28_bw90.json
+    required_modules:
+      - numpy
+      - torch

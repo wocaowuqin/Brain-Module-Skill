@@ -1,0 +1,1279 @@
+                                                             QTRAN: Learning to Factorize with Transformation for
+                                                               Cooperative Multi-Agent Reinforcement learning
+
+
+                                                             Kyunghwan Son 1 Daewoo Kim 1 Wan Ju Kang 1 David Hostallero 1 Yung Yi 1
+
+
+                                                                   Abstract                                  neural networks, which can represent action-value functions
+arXiv:1905.05408v1 [cs.LG] 14 May 2019
+
+
+
+
+                                                                                                             and policy functions in reinforcement learning problems
+                                                We explore value-based solutions for multi-agent
+                                                                                                             as a high-capacity function approximator. However, more
+                                                reinforcement learning (MARL) tasks in the cen-
+                                                                                                             complex tasks such as robot swarm control and autonomous
+                                                tralized training with decentralized execution
+                                                                                                             driving, often modeled as cooperative multi-agent learning
+                                                (CTDE) regime popularized recently. However,
+                                                                                                             problems, still remain unconquered due to their high scales
+                                                VDN and QMIX are representative examples that
+                                                                                                             and operational constraints such as distributed execution.
+                                                use the idea of factorization of the joint action-
+                                                value function into individual ones for decentral-           The use of deep learning techniques carries through to coop-
+                                                ized execution. VDN and QMIX address only                    erative multi-agent reinforcement learning (MARL). MAD-
+                                                a fraction of factorizable MARL tasks due to                 DPG (Lowe et al., 2017) learns distributed policy in con-
+                                                their structural constraint in factorization such            tinuous action spaces, and COMA (Foerster et al., 2018)
+                                                as additivity and monotonicity. In this paper, we            utilizes a counterfactual baseline to address the credit assign-
+                                                propose a new factorization method for MARL,                 ment problem. Among value-based methods, value function
+                                                QTRAN, which is free from such structural con-               factorization (Koller & Parr, 1999; Guestrin et al., 2002a;
+                                                straints and takes on a new approach to trans-               Sunehag et al., 2018; Rashid et al., 2018) methods have been
+                                                forming the original joint action-value function             proposed to efficiently handle a joint action-value function
+                                                into an easily factorizable one, with the same               whose complexity grows exponentially with the number of
+                                                optimal actions. QTRAN guarantees more gen-                  agents.
+                                                eral factorization than VDN or QMIX, thus cov-
+                                                                                                             Two representative examples of value function factorization
+                                                ering a much wider class of MARL tasks than
+                                                                                                             include VDN (Sunehag et al., 2018) and QMIX (Rashid
+                                                does previous methods. Our experiments for the
+                                                                                                             et al., 2018). VDN factorizes the joint action-value function
+                                                tasks of multi-domain Gaussian-squeeze and mod-
+                                                                                                             into a sum of individual action-value functions. QMIX ex-
+                                                ified predator-prey demonstrate QTRAN’s supe-
+                                                                                                             tends this additive value factorization to represent the joint
+                                                rior performance with especially larger margins
+                                                                                                             action-value function as a monotonic function — rather
+                                                in games whose payoffs penalize non-cooperative
+                                                                                                             than just as a sum — of individual action-value functions,
+                                                behavior more aggressively.
+                                                                                                             thereby covering a richer class of multi-agent reinforcement
+                                                                                                             learning problems than does VDN. However, these value
+                                                                                                             factorization techniques still suffer structural constraints,
+                                         1. Introduction                                                     namely, additive decomposability in VDN and monotonic-
+                                         Reinforcement learning aims to instill in agents a good             ity in QMIX, often failing to factorize a factorizable task.
+                                         policy that maximizes the cumulative reward in a given              A task is factorizable if the optimal actions of the joint
+                                         environment. Recent progress has witnessed success in               action-value function are the same as the optimal ones of
+                                         various tasks, such as Atari games (Mnih et al., 2015), Go          the individual action-value functions, where additive decom-
+                                         (Silver et al., 2016; 2017), and robot control (Lillicrap et al.,   posability and monotonicity are only sufficient — somewhat
+                                         2015), just to name a few, with the development of deep             excessively restrictive — for factorizability.
+                                         learning techniques. Such advances largely consist of deep
+                                                                                                             Contribution In this paper, we aim at successfully
+                                            1
+                                              School of Electrical Enginerring, KAIST, Daejeon, South Ko-    factorizing any factorizable task, free from additiv-
+                                         rea. Correspondence to: Yung Yi <yiyung@kaist.edu>, Kyungh-         ity/monotonicity concerns. We transform the original joint
+                                         wan Son <kevinson9473@kaist.ac.kr>.                                 action-value function into a new, easily factorizable one
+                                         Proceedings of the 36 th International Conference on Machine        with the same optimal actions in both functions. This is
+                                         Learning, Long Beach, California, PMLR 97, 2019. Copyright          done by learning a state-value function, which corrects for
+                                         2019 by the author(s).                                              the severity of the partial observability issue in the agents.
+          QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+We incorporate the said idea in a novel architecture, called      The line of research positioned mid-spectrum aims to put
+QTRAN, consisting of the following inter-connected deep           together the best of both worlds. More recent studies, such
+neural networks: (i) joint action-value network, (ii) indi-       as COMA (Foerster et al., 2018), take advantage of CTDE
+vidual action-value networks, and (iii) state-value network.      (Oliehoek et al., 2008); actors are trained by a joint critic to
+To train this architecture, we define loss functions appro-       estimate a counterfactual baseline designed to gauge each
+priate for each neural network. We develop two variants of        agent’s contribution to the shared task. Gupta et al. (2017)
+QTRAN: QTRAN-base and QTRAN-alt, whose distinction                implements per-agent critics to opt for better scalability at
+is twofold: how to construct the transformed action-value         the cost of diluted benefits of centralization. MADDPG
+functions for non-optimal actions; and the degree of sta-         (Lowe et al., 2017) extends DDPG (Lillicrap et al., 2015) to
+bility and convergence speed. We assess the performance           the multi-agent setting by similar means of having a joint
+of QTRAN by comparing it against VDN and QMIX in                  critic train the actors. Wei et al. (2018) proposes Multi-
+three environments. First, we consider a simple, single-          Agent Soft Q-learning in continuous action spaces to tackle
+state matrix game that does not satisfy additivity or mono-       the relative overgeneralization problem (Wei & Luke, 2016)
+tonicity, where QTRAN successfully finds the joint opti-          and achieves better coordination. Other related work in-
+mal action, whereas neither VDN nor QMIX does. We                 cludes CommNet (Sukhbaatar et al., 2016), DIAL (Foerster
+then observe a similarly desirable cooperation-inducing ten-      et al., 2016), ATOC (Jiang & Lu, 2018), and SCHEDNET
+dency of QTRAN in more complex environments: modified             (Kim et al., 2019), which exploit inter-agent communication
+predator-prey games and multi-domain Gaussian squeeze             in execution.
+tasks. In particular, we show that the performance gap
+                                                                  On a different note, two representative examples of value-
+between QTRAN and VDN/QMIX increases with environ-
+                                                                  based methods have recently been shown to be somewhat
+ments having more pronounced non-monotonic characteris-
+                                                                  effective in analyzing a class of games. Namely, VDN
+tics.
+                                                                  (Sunehag et al., 2018) and QMIX (Rashid et al., 2018) rep-
+                                                                  resent the body of literature most closely related to this
+Related work Extent of centralization varies across the           paper. While both are value-based methods and follow the
+spectrum of cooperative MARL research. While more de-             CTDE approach, the additivity and monotonicity assump-
+centralized methods benefit from scalability, they often suf-     tions naturally limit the class of games that VDN or QMIX
+fer non-stationarity problems arising from a trivialized su-      can solve.
+perposition of individually learned behavior. Conversely,
+more centralized methods alleviate the non-stationarity is-
+sue at the cost of complexity that grows exponentially with
+                                                                  2. Background
+the number of agents.                                             2.1. Model and CTDE
+Prior work tending more towards the decentralized end of          DEC-POMDP We take DEC-POMDP (Oliehoek et al.,
+the spectrum include Tan (1993), whose independent Q-             2016) as the de facto standard for modelling coopera-
+learning algorithm exhibits the greatest degree of decentral-     tive multi-agent tasks, as do many previous works: as
+ization. Tampuu et al. (2017) combines this algorithm with        a tuple G =< S, U, P, r, Z, O, N, γ >, where s ∈ S
+deep learning techniques presented in DQN (Mnih et al.,           denotes the true state of the environment. Each agent
+2015). These studies, while relatively simpler to implement,      i ∈ N := {1, ..., N } chooses an action ui ∈ U at each time
+are subject to the threats of training instability, as multiple   step, giving rise to a joint action vector, u := [ui ]N      N
+                                                                                                                        i=1 ∈ U .
+agents attempt to improve their policy in the midst of other                      0                 N
+                                                                  Function P (s |s, u) : S × U × S 7→ [0, 1] governs all
+agents, whose policies also change over time during training.     state transition dynamics. Every agent shares the same joint
+This simultaneous alteration of policies essentially makes        reward function r(s, u) : S × U N 7→ R, and γ ∈ [0, 1)
+the environment non-stationary.                                   is the discount factor. Each agent has individual, partial
+The other end of the spectrum involves some centralized           observation z ∈ Z, according to some observation function
+entity to resolve the non-stationarity problem. Guestrin et al.   O(s, i) : S × N 7→ Z. Each agent also has an action-
+(2002b) and Kok & Vlassis (2006) are some of the ear-             observation history τi ∈ T := (Z × U)∗ , on which it
+lier representative works. Guestrin et al. (2002b) proposes       conditions its stochastic policy πi (ui |τi ) : T × U 7→ [0, 1].
+a graphical model approach in presenting an alternative           Training and execution: CTDE Arguably the most
+characterization of a global reward function as a sum of          naïve training method for MARL tasks is to learn the in-
+conditionally independent agent-local terms. Kok & Vlassis        dividual agents’ action-value functions independently, i.e.,
+(2006) exploits the sparsity of the states requiring coordina-    independent Q-learning. This method would be simple and
+tion compared to the whole state space and then tabularize        scalable, but it cannot guarantee convergence even in the
+those states to carry out tabular Q-learning methods as in        limit of infinite greedy exploration. As an alternative solu-
+Watkins (1989).                                                   tion, recent works including VDN (Sunehag et al., 2018)
+            QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+and QMIX (Rashid et al., 2018) employ centralized training             3. QTRAN: Learning to Factorize with
+with decentralized execution (CTDE) (Oliehoek et al., 2008)               Transformation
+to train multiple agents. CTDE allows agents to learn and
+construct individual action-value functions, such that opti-           In this section, we propose a new method called QTRAN,
+mization at the individual level leads to optimization of the          aiming at factorizing any factorizable task. The key idea is
+joint action-value function. This in turn, enables agents at           to transform the original joint action-value function Qjt into
+execution time to select an optimal action simply by looking           a new one Q0jt that shares the optimal joint action with Qjt .
+up the individual action-value functions, without having to
+refer to the joint one. Even with only partial observability           3.1. Conditions for the Factor Functions [Qi ]
+and restricted inter-agent communication, information can
+                                                                       For a given joint observation τ , consider an arbitrary fac-
+be made accessible to all agents at training time.
+                                                                       torizable Qjt (τ , u). Then, by Definition 1 of IGM, we can
+                                                                       find individual action-value functions [Qi (τi , ui )] that fac-
+2.2. IGM Condition and Factorizable Task                               torize Qjt (τ , u). Theorem 1 states the sufficient condition
+Consider a class of sequential decision-making tasks that are          for [Qi ] that satisfy IGM. Let ūi denote the optimal local
+amenable to factorization in the centralized training phase.           action arg maxui Qi (τi , ui ) and ū = [ūi ]N
+                                                                                                                     i=1 ,. Also, let
+We first define IGM (Individual-Global-Max):                           Q = [Qi ] ∈ RN , i.e., a column vector of Qi , i = 1, . . . , N.
+Definition 1 (IGM). For a joint action-value function                  Theorem 1. A factorizable joint action-value function
+Qjt : T N × U N 7→ R, where τ ∈ T N is a joint action-                 Qjt (τ , u) is factorized by [Qi (τi , ui )], if
+observation histories, if there exist individual action-value
+                                                                       N
+functions [Qi : T × U 7→ R]N                                                                                         0       u = ū, (4a)
+                                                                                                                    
+                                i=1 , such that the following
+                                                                       X
+                                                                             Qi (τi , ui )−Qjt (τ , u)+Vjt (τ ) =
+holds                                                                                                                 ≥ 0 u 6= ū, (4b)
+                                                                       i=1
+                                                     
+                             arg maxu1 Q1 (τ1 , u1 )
+                                                                       where
+  arg max Qjt (τ , u) =                 ..
+                                                       , (1)
+                                                     
+        u                                 .                                                                     N
+                              arg maxuN QN (τn , uN )
+                                                                                                                X
+                                                                                 Vjt (τ ) = max Qjt (τ , u) −         Qi (τi , ūi ).
+                                                                                             u
+                                                                                                                i=1
+then, we say that [Qi ] satisfy IGM for Qjt under τ . In this
+case, we also say that Qjt (τ , u) is factorized by [Qi (τi , ui )],
+or that [Qi ] are factors of Qjt .                                     The proof is provided in the Supplementary. We note that
+                                                                       conditions in (4) are also necessary under an affine trans-
+Simply put, the optimal joint actions across agents are equiv-         formation. That is, there exists an affine transformation
+                                                                                                                     ×N
+alent to the collection of individual optimal actions of each          φ(Q) = A · Q + B, where A = [aii ] ∈ RN     +     is a symmet-
+agent. If Qjt (τ , u) in a given task is factorizable under all        ric diagonal matrix with aii > 0, ∀i and B = [bi ] ∈ RN ,
+τ ∈ T N , we say that the task itself is factorizable.                 such that if Qjt is factorized by [Qi ], then (4) holds by re-
+                                                                       placing Qi with aii Qi + bi . This is because for all i, bi
+2.3. VDN and QMIX                                                                PN and aii just plays the role of re-scaling the
+                                                                       cancels out,
+                                                                       value of i=1 Qi in multiplicative (with a positive scaling
+Given Qjt , one can consider the following two sufficient              constant) and additive manners, since IGM is invariant to φ
+conditions for IGM:                                                    of [Qi ].
+                                          N
+                                          X                            Factorization via transformation We first define a new
+        (Additivity)      Qjt (τ , u) =         Qi (τi , ui ),   (2)   function Q0jt as the linear sum of individual factor functions
+                                          i=1                          [Qi ]:
+                          ∂Qjt (τ , u)                                                                 N
+    (Monotonicity)                       ≥ 0,      ∀i ∈ N .      (3)                   Q0jt (τ , u) :=
+                                                                                                       X
+                                                                                                          Qi (τi , ui ).          (5)
+                          ∂Qi (τi , ui )
+                                                                                                       i=1
+
+VDN (Sunehag et al., 2018) and QMIX (Rashid et al., 2018)              We call Q0jt (τ , u) the transformed joint-action value func-
+are methods that attempt to factorize Qjt assuming addi-               tion throughout this paper. Our idea of factorization is
+tivity and monotonicity, respectively. Thus, joint action-             as follows: from the additive construction of Q0jt based
+value functions satisfying those conditions would be well-             on [Qi ], [Qi ] satisfy IGM for the new joint action-value
+factorized by VDN and QMIX. However, there exist tasks                 function Q0jt , implying that [Qi ] are also the factorized in-
+whose joint action-value functions do not meet the said con-           dividual action-value functions of Q0jt . From the fact that
+ditions. We illustrate this limitation of VDN and QMIX                 arg maxu Qjt (τ , u) = arg maxu Q0jt (τ , u), finding [Qi ]
+using a simple matrix game in the next section.                        satisfying (4) is precisely the factorization of Q0jt (τ , u).
+          QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+
+        Training
+                                                         +                 ′
+                                                                          𝑄𝑗𝑡 (𝝉, 𝒖)
+        Execution                𝑄1 𝜏1 ,⋅
+                                      𝑄1 (𝜏1 , 𝑢1 )                      𝑳𝒐𝒑𝒕 , 𝑳𝒏𝒐𝒑𝒕
+      (𝜏1 , 𝑢1 )
+                                                                               𝑉𝑗𝑡 𝝉
+
+                          ℎ1 (𝜏1 , 𝑢1 )                                   𝑄𝑗𝑡 𝝉, 𝒖             𝑳𝒕𝒅
+        …
+
+
+                                                                𝑄𝑗𝑡 𝝉,⋅, 𝒖−1                       ′
+                                                                                                  𝑄𝑗𝑡 𝝉,⋅, 𝒖−1
+                                                                                         𝑳𝒐𝒑𝒕 , 𝑳𝒏𝒐𝒑𝒕−𝒎𝒊𝒏
+                         ℎ𝑁 (𝜏𝑁 , 𝑢𝑁 )                          𝑄𝑗𝑡 𝝉,⋅, 𝒖−𝑁
+                                                                                         𝑳𝒕𝒅
+
+
+                                                                                        𝑳𝒐𝒑𝒕 , 𝑳𝒏𝒐𝒑𝒕−𝒎𝒊𝒏
+      (𝜏𝑁 , 𝑢𝑁 )                                                                        𝑳𝒕𝒅                      QTRAN-base
+                                                                         𝑉𝑗𝑡 𝝉                                      or
+                                     𝑄𝑁 (𝜏𝑁 , 𝑢𝑁 )
+                                𝑄𝑁 𝜏𝑁 ,⋅
+                                                         +                                        ′
+                                                                                                 𝑄𝑗𝑡 𝝉,⋅, 𝒖−𝑁
+                                                                                                                 QTRAN-alt
+
+
+
+                                              Figure 1. QTRAN-base and QTRAN-alt Architecture
+
+
+One interpretation of this process is that rather than directly          determine its own action by calculating the action-value for
+factorizing Qjt , we consider an alternative joint action-value          a given τi . As defined in (5), Q0jt is just the summation of
+function (i.e., Q0jt ) that is factorized by additive decompo-           the outputs of all agents.
+sition. The function Vjt (τ ) corrects for the discrepancy
+                                                                         Joint action-value network The joint action-value net-
+between the centralized joint action-value function Qjt and
+                                                                         work approximates Qjt . It takes as input the selected action
+the sum of individual joint action-value functions [Qi ]. This
+                                                                         and produces the Q-value of the chosen action as output. For
+discrepancy arises from the partial observability of agents.
+                                                                         scalability and sample efficiency, we design this network
+If bestowed with full observability, Vjt can be re-defined
+                                                                         as follows. First, we use the action vector sampled by all
+as zero, and the definitions would still stand. Refer to the
+                                                                         individual action-value networks to update the joint action-
+Supplementary for more detail.
+                                                                         value network. Since the joint action space is U N , finding
+                                                                         an optimal action requires high complexity as the number
+3.2. Method
+                                                                         of agents N grows, whereas obtaining an optimal action
+Overall framework In this section, we propose a new                      in each individual network is done by decentralized poli-
+deep RL framework with value function factorization, called              cies with linear-time individual arg max operations. Sec-
+QTRAN, whose architectural sketch is given in Figure 1.                  ond, the joint action-value network shares the parameters
+QTRAN consists of three separate estimators: (i) each agent              at the lower layers of individual networks, where the joint
+i’s individual action-value network for Qi , (ii) a joint action-        action-value
+                                                                              P       network combines hidden features with summa-
+value network for Qjt to be factorized into individual action-           tion i hQ,i (τi , ui ) of hi (τi , ui ) = [hQ,i (τi , ui ), hV,i (τi )]
+value functions Qi , and (iii) a state-value network for Vjt ,           from individual networks. This parameter sharing is used to
+i.e.,                                                                    enable scalable training with good sample efficiency at the
+                                                                         expense of expressive power.
+(Individual action-value network) fq : (τi , ui ) 7→ Qi ,
+                                                                         State-value network The state-value network is respon-
+       (Joint action-value network) fr : (τ , u) 7→ Qjt ,
+                                                                         sible for computing a scalar state-value, similar to V (s) in
+                   (State-value network) fv : τ 7→ Vjt .                 the dueling network (Wang et al., 2016). Vjt is required
+                                                                         to provide the flexibility to match Qjt and Q0jt + Vjt at
+Three neural networks are trained in a centralized manner,
+                                                                         arg max. Without state-value network, partial observability
+and each agent uses its own factorized individual action-
+                                                                         would limit the representational complexity of Q0jt . The
+value function Qi to take action during decentralized execu-
+                                                                         state-value is independent of the selected action for a given
+tion. Each network is elaborated next.
+                                                                         τ . Thus, this value network does not contribute to choosing
+Individual action-value networks For each agent, an                      an action, and is instead used to calculate the loss of (4).
+action-value network takes its own action-observation his-               Like the joint action-value
+                                                                                           P          network, we use the combined
+tory τi as input, and produces action-values Qi (τi , ·) as              hidden features i hV,i (τi ) from the individual networks
+output. This action-value network is used for each agent to              as input to the value network for scalability.
+           QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+3.3. Loss Functions                                                   too loose, leading the neural networks to fail their mission
+                                                                      of constructing the correct factors of Qjt . That is, condi-
+There are two major goals in centralized training. One is
+                                                                      tion (4b) imposes undesirable influence on the non-optimal
+that we should train the joint action-value function Qjt to
+                                                                      actions, which in turn compromises the stability and/or con-
+estimate the true action-value; the other is that the trans-
+                                                                      vergence speed of the training process. This motivates us to
+formed action-value function Q0jt should “track” the joint
+                                                                      study conditions stronger than (4b) that would still be suffi-
+action-value function in the sense that their optimal actions
+                                                                      cient for factorizability, but at the same time would also be
+are equivalent. We use the algorithm introduced in DQN
+                                                                      necessary under the aforementioned affine transformation
+(Mnih et al., 2015) to update networks, where we maintain
+                                                                      φ, as in Theorem 1.
+a target network and a replay buffer. To this end, we devise
+the following global loss function in QTRAN, combining                Theorem 2. The statement presented in Theorem 1 and the
+three loss functions in a weighted manner:                            necessary condition of Theorem 1 holds by replacing (4b)
+                                                                      with the following (7): if u 6= ū,
+     L(τ , u, r, τ 0 ; θ) = Ltd + λopt Lopt + λnopt Lnopt ,    (6)             h
+                                                                         min Q0jt (τ , ui , u−i ) − Qjt (τ , ui , u−i )
+where r is the reward for action u at observation histories τ            ui ∈U
+with transition to τ 0 . Ltd is the loss function for estimating
+                                                                                           i
+                                                                                 + Vjt (τ ) = 0, ∀i = 1, . . . , N,        (7)
+the true action-value, by minimizing the TD-error as Qjt
+is learned. Lopt and Lnopt are losses for factorizing Qjt by
+                                                                      where u−i = (u1 , . . . , ui−1 , ui+1 , . . . , uN ), i.e., the action
+[Qi ] satisfying condition (4). The role of Lnopt is to check at
+                                                                      vector except for i’s action.
+each step if the action selected in the samples satisfied (4b),
+and Lopt confirms that the optimal local action obtained              The proof is presented in the Supplementary. The key idea
+satisfies (4a). One could implement (4) by defining a loss            behind (7) lies in what conditions to enforce on non-optimal
+depending on how well the networks satisfy (4a) or (4b)               actions. It stipulates that Q0jt (τ , u) − Qjt (τ , u) + Vjt (τ )
+with actions taken in the samples. However, in this way,              be set to zero for some actions. Now, it is not possible to
+verifying whether (4a) is indeed satisfied would take too             zero this value for every action u, but it is available for at
+many samples since optimal actions are seldom taken at                least one action whilst still abiding by Theorem 1. It is
+training. Since we aim to learn Q0jt and Vjt to factorize             clear that condition (7) is stronger than condition (4b), as
+for a given Qjt , we stabilize the learning by fixing Qjt             desired. For non-optimal actions u 6= ū, the conditions
+when learning with Lopt and Lnopt . We let Q̂jt denote this           of Theorem 1 are satisfied when Qjt (τ , u) − Vjt (τ ) ≤
+fixed Qjt . λopt and λnopt are the weight constants for two           Q0jt (τ , u) ≤ Q0jt (τ , ū) for any given τ . Under this condi-
+losses. The detailed forms of Ltd , Lopt , and Lnopt are given        tion, however, there can exist a non-optimal action u 6= ū
+as follows, where we omit their common function arguments             whose Q0jt (τ , u) is comparable to Q0jt (τ , ū) but Qjt (τ , u)
+(τ , u, r, τ 0 ) in loss functions for presentational simplicity:     is much smaller than Qjt (τ , ū). This may cause instabil-
+                                                 2                   ity in the practical learning process. However, the newly
+  Ltd (; θ) = Qjt (τ , u) − y dqn (r, τ 0 ; θ − ) ,
+                                                      2              devised condition (7) compels Q0jt (τ , u) to track Qjt (τ , u)
+ Lopt (; θ) = Q0jt (τ , ū) − Q̂jt (τ , ū) + Vjt (τ ) ,              even for the problematic non-optimal actions mentioned
+                                                           2       above. This helps in widening the gap between Q0jt (τ , u)
+Lnopt (; θ) = min Q0jt (τ , u) − Q̂jt (τ , u) + Vjt (τ ), 0
+                        
+                                                                  ,   and Q0jt (τ , ū), and this gap makes the algorithm more sta-
+                                                                      ble. Henceforth, we call the deep MARL method outlined
+where y dqn (r, τ 0 ; θ − ) = r + γQjt (τ 0 , ū0 ; θ − ), ū0 =      by Theorem 2 QTRAN-alt, to distinguish it from the one
+[arg maxui Qi (τi0 , ui ; θ − )]N          −
+                                i=1 , and θ are the periodically      due to condition (4b).
+copied parameters from θ, as in DQN (Mnih et al., 2015).
+                                                                      Counterfactual joint networks To reflect our idea of (7),
+                                                                      we now propose a counterfactual joint network, which re-
+3.4. Tracking the Joint Action-value Function
+                                                                      places the joint action-value network of QTRAN-base, to
+     Differently
+                                                                      efficiently calculate Qjt (τ , ·, u−i ) and Q0jt (τ , ·, u−i ) for
+We name the method previously discussed QTRAN-base,                   all i ∈ N with only one forward pass. To this end, in
+to reflect the basic nature of how it keeps track of the joint        the QTRAN-alt module, each agent has a counterfactual
+action-value function. Here on, we consider a variant of              joint network with the output of Qjt (τ , ·, u−i ) for each
+QTRAN, which utilizes a counterfactual measure. As men-               possible action, given other agents’ actions. As a joint
+tioned earlier, Theorem 1 is used to enforce IGM by (4a)              action-value network,
+                                                                                      P          we use hV,i (τi ) and the combined hid-
+and determine how the individual action-value functions               den features j6=i hQ,j (τj , uj ) from otherPagents. Finally,
+[Qi ] and the State-value function Vjt jointly “track” Qjt by         Q0jt (τ , ·, u−i ) is calculated as Qi (τi , ·) + j6=i Qj (τj , uj )
+(4b), which governs the stability of constructing the cor-            for all agents. This architectural choice is realized by
+rect factorizing Qi ’s. We found that condition (4b) is often         choosing the loss function to be Lnopt-min , replacing Lnopt in
+              QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+     u2                                      Q2
+               A        B        C                   4.16(A) 2.29(B) 2.29(C)      20                                     20                                     20                                     20
+
+   u1                                      Q1
+                                                                                  15                                     15                                     15                                     15
+    A          8       -12      -12       3.84(A)     8.00     6.13    6.12
+                                                                                  10                                     10                                     10                                     10
+    B         -12       0        0        -2.06(B)    2.10     0.23    0.23
+    C         -12       0        0        -2.25(C)    1.92     0.04    0.04           5                                      5                                      5                                      5
+
+
+
+
+                                            (b) QTRAN: Q1 , Q2 , Q0jt
+                                                                                      0                                      0                                      0                                      0
+   (a) Payoff of matrix game                                                              0       5    10    15    20            0       5    10    15    20            0       5    10    15    20            0       5    10    15    20
+
+
+     u2                                      u2
+   u1
+               A        B        C
+                                           u1
+                                                        A       B       C        (a) Qjt : 1000 step (b) Qjt : 2000 step (c) Qjt : 3000 step (d) Qjt : 4000 step
+                                                                                  20                                     20                                     20                                     20
+    A         8.00    -12.02   -12.02        A        0.00    18.14    18.14
+    B        -12.00    0.00     0.00         B        14.11    0.23    0.23       15                                     15                                     15                                     15
+
+    C        -12.00    0.00     -0.01        C        13.93    0.05    0.05       10                                     10                                     10                                     10
+
+
+
+          (c) QTRAN: Qjt                     (d) QTRAN: Q0jt − Qjt                    5                                      5                                      5                                      5
+
+
+
+     Q2                                      Q2                                       0                                      0                                      0                                      0
+            -3.14(A) -2.29(B) -2.41(C)               -0.92(A) 0.00(B) 0.01(C)             0       5    10    15    20            0       5    10    15    20            0       5    10    15    20            0       5    10    15    20
+  Q1                                       Q1
+ -2.29(A)    -5.42    -4.57    -4.70      -1.02(A)    -8.08   -8.08    -8.08    (e) base: 1000 step (f) base: 2000 step (g) base: 3000 step (h) base: 4000 step
+ -1.22(B)    -4.35    -3.51    -3.63       0.11(B)    -8.08   0.01     0.03      20                                     20                                     20                                     20
+
+ -0.73(C)    -3.87    -3.02    -3.14       0.10(C)    -8.08   0.01     0.02
+                                                                                 15                                     15                                     15                                     15
+
+
+        (e) VDN: Q1 , Q2 , Qjt               (f) QMIX: Q1 , Q2 , Qjt             10                                     10                                     10                                     10
+
+
+                                                                                  5                                      5                                      5                                      5
+
+Table 1. Payoff matrix of the one-step game and reconstructed Qjt                 0                                      0                                      0                                      0
+                                                                                      0       5       10    15    20         0       5       10    15    20         0       5       10    15    20         0       5       10    15    20
+results on the game. Boldface means optimal/greedy actions from
+the state-action value                                                           (i) alt: 1000 step                     (j) alt: 2000 step                     (k) alt: 3000 step                     (l) alt: 4000 step
+
+                                                                                Figure 2. base: QTRAN-base, alt: QTRAN-alt. x-axis and y-axis:
+ QTRAN-base as follows:
+                                                                                agents 1 and 2’s actions, respectively. Colored values represent the
+                                             N                                  values of Qjt ((a)-(d)) and Q0jt ((e)-(l)) for selected actions.
+                                         1 X
+  Lnopt-min (τ , u, r, τ 0 ; θ) =             ( min D(τ , ui , u−i ))2 ,
+                                         N i=1 ui ∈U                            meaning successful factorization. Note that Tables 1c and
+                                                                                1d demonstrate the difference between Qjt and Q0jt , stem-
+where                                                                           ming from our transformation, where their optimal actions
+D(τ , ui , u−i ) = Q0jt (τ , ui , u−i ) − Q̂jt (τ , ui , u−i )+Vjt (τ ).        are the nonetheless same. Table 1d shows that QTRAN
+                                                                                also satisfies (4), thereby validating our design principle as
+ In QTRAN-alt, Ltd , Lopt are also used, but they are also                      described in Theorem 1. However, in VDN, agents 1’s and
+ computed for all agents.                                                       2’s individual optimal actions are C and B, respectively.
+                                                                                VDN fails to factorize Pbecause the structural constraint of
+ 3.5. Example: Single-state Matrix Game                                         additivity Qjt (u) = i=1,2 Qi (ui ) is enforced, leading to
+                                                                                deviations from IGM,Pwhose sufficient condition is addi-
+In this subsection, we present how QTRAN performs com-                          tivity, i.e., Qjt (u) = i=1,2 Qi (ui ) for all u = (u1 , u2 ).
+pared to existing value factorization ideas such as VDN                         QMIX also fails in factorization in a similar manner due to
+and QMIX, and how the two variants QTRAN-base and                               the structural constraint of monotonicity.
+QTRAN-alt behave. The matrix game and learning results
+are shown in Table 11 . This symmetric matrix game has                          Impact of QTRAN-alt In order to see the impact of
+the optimal joint action (A, A), and captures a very simple                     QTRAN-alt, we train the agents in a matrix game where
+cooperative multi-agent task, where we have two users with                      two agents each have 21 actions. Figure 2 illustrates the
+three actions each. Evaluation with more complicated tasks                      joint action-value function and its transformations of both
+are provided in the next subsection. We show the results                        QTRAN-base and QTRAN-alt. The result shows that both
+of VDN, QMIX, and QTRAN through a full exploration                              algorithms successfully learn the optimal action by correctly
+(i.e.,  = 1 in -greedy) conducted over 20,000 steps. Full                     estimating the Qjt for u = ū for any given state. Q0jt values
+exploration guarantees to explore all available game states.                    for non-optimal actions are different from Qjt , but it has a
+Therefore, we can compare only the expressive power of the                      different tendency in each algorithm as follows. As shown
+methods. Other details are included in the Supplementary.                       in Figures 2e-2h, all Q0jt values in QTRAN-base have only
+                                                                                a small difference from the maximum value of Qjt , whereas
+ Comparison with VDN and QMIX Tables 1b-1f show                                 Figures 2i-2l show that QTRAN-alt has the ability to more
+ the learning results of QTRAN, VDN, and QMIX. Table 1b                         accurately distinguish optimal actions from non-optimal ac-
+ shows that QTRAN enables each agent to jointly take the                        tions. Thus, in QTRAN-alt, the agent can smartly explore
+ optimal action only by using its own locally optimal action,                   and have better sample efficiency to train the networks. This
+    1
+     We present only Qjt and Q0jt , because in fully observable                 feature of QTRAN-alt also prevents learning unsatisfactory
+ cases (i.e., observation function is bijective for all i) Theorem 1            policies in complex environments. Full details on the exper-
+ holds for Vjt (τ ) = 0. We discuss further in Supplementary.                   iment are included in the Supplementary.
+                 QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+         8                                                   8                                             8
+ Score
+
+
+
+
+                                                     Score
+
+
+
+
+                                                                                                   Score
+         4                                                   4                       QTRAN-alt             4
+                                       QTRAN-alt                                     QTRAN-base                                    QTRAN-alt
+                                       QTRAN-base                                    QMIX                                          QTRAN-base
+                                       QMIX                                          VDN                                           QMIX
+                                       VDN                                                                                         VDN
+         0                                                   0                                             0
+             0            5×105                106               0      5×105                106               0      5×105                106
+                       Training step                                 Training step                                 Training step
+
+                  (a) Gaussian Squeeze               (b) Gaussian Squeeze without epsilon decay (c) Multi-domain Gaussian Squeeze K = 2
+
+                 Figure 3. Average reward on the GS and GMS tasks with 95% confidence intervals for VDN, QMIX, and QTRAN
+
+4. Experiment                                                              prey (Stone & Veloso, 2000) in the grid world, used in many
+                                                                           other MARL research. State and action spaces are con-
+4.1. Environments                                                          structed similarly to those of the classic predator-prey game.
+To demonstrate the performance of QTRAN, we consider                       “Catching” a prey is equivalent to having the prey within an
+two environments: (i) Multi-domain Gaussian Squeeze                        agent’s observation horizon. We extend it to the scenario
+and (ii) modified predator-prey. Details on our imple-                     that positive reward is given only if multiple predators catch
+mentation of QTRAN, the source code of our implemen-                       a prey simultaneously, requiring a higher degree of coopera-
+tation in TensorFlow, and other experimental scripts are                   tion. The predators get a team reward of 1, if two or more
+available in the Supplementary and a public repository:                    catch a prey at the same time, but they are given negative
+https://github.com/Sonkyunghwan/QTRAN.                                     reward −P , when only one predator catches the prey.
+
+Multi-domain Gaussian Squeeze (MGS) Gaussian                               Note that the value of penalty P also determines the degree
+Squeeze (GS) (HolmesParker et al., 2014) is a simple non-                  of monotonicity, i.e., the higher P is, the less monotonic the
+monotonic multi-agent resource allocation problem, used                    task is. The prey that has been caught regenerated at random
+in other papers, e.g., Yang et al. (2018) and Chen et al.                  positions whenever caught by more than one predator. In
+(2018). In GS, multiple homogeneous agents need to work                    our evaluation, we tested up to N = 4 predators and up
+together for efficient resource allocation whilst avoiding                 to two prey, and the game proceeds over fixed 100 steps.
+congestion. We use GS in conjunction with Multi-domain                     We experimented with six different settings with varying
+Gaussian Squeeze (MGS) as follows: we have ten agents;                     P values and numbers of agents, where N = 2, 4 and
+each agent i takes action ui , which controls the resource                 P = 0.5, 1.0, 1.5. For the N = 4 case, we placed two prey;
+usage level, ranging over {0, 1, ..., 9}. Each agent has its               otherwise, just one. The detailed settings are available in
+own amount of unit-level resource si ∈ [0, 0.2], given by                  the Supplementary.
+
+                                     P action u determines
+the environment a priori. Then, a joint
+                                                                           4.2. Results
+the overall resource usage x(u) = i si × ui . We assume
+that there exist K domains, where the above resource allo-                 Multi-domain Gaussian Squeeze Figure 3a shows the
+cation takes place. Then, the goal is to maximize the joint                result of GS, where it is not surprising to observe that all al-
+                               PK                2   2
+reward defined as G(u) = k=1 xe−(x−µk ) /σk , where                        gorithms converge to the optimal point. However, QTRAN
+µk and σk are the parameters of each domain. Depending                     noticeably differs in its convergence speed; it is capable
+on the number of domains, GS has only one local maximum,                   of handling the non-monotonic nature of the environment
+whereas MGS has multiple local maxima. In our MGS set-                     more accurately and of finding an optimal policy from well-
+ting, compared to GS, the optimal policy is similar to that in             expressed action-value functions. VDN and QMIX have
+GS, and through this policy, the reward similar to that in GS              some structural constraints, which hinder the accurate learn-
+can be obtained. Additionally, in MGS, a new sub-optimal                   ing of the action-value functions for non-monotonic struc-
+“pitfall” policy that is easier to achieve but is only half as             tures. These algorithms converge to the locally optimal
+rewarding as the optimal policy. The case when K > 1 is                    point — which is the globally optimal point in GS, where
+usefully utilized to test the algorithms that are required to              K = 1 — near the biased samples by a wrong policy with
+avoid sub-optimal points in the joint space of actions. The                epsilon-decay exploration. To support our claim, we experi-
+full details on the environment setup and hyperparameters                  ment with the full exploration without epsilon-decay for the
+are described in the Supplementary.                                        same environment, as shown in Figure 3b. We observe that
+Modified predator-prey (MPP) We adopt a more com-                          QTRAN learns more or less the same policy as in Figure 3a,
+plicated environment by modifying the well-known predator-                 whereas VDN and QMIX significantly deteriorate. Fig-
+                  QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+         30                                                 30                                                30
+
+
+         15                                                 15                                                15
+Score
+
+
+
+
+                                                   Score
+
+
+
+
+                                                                                                     Score
+          0                         QTRAN-alt                0                        QTRAN-alt                0                        QTRAN-alt
+                                    QTRAN-base                                        QTRAN-base                                        QTRAN-base
+                                    QMIX                                              QMIX                                              QMIX
+                                    VDN                                               VDN                                               VDN
+        −15                                                −15                                               −15
+              0           1.5×106        3.0×106                 0          1.5×106        3.0×106                 0          1.5×106        3.0×106
+                        Training step                                     Training step                                     Training step
+
+                   (a) N = 2, P = 0.5                                (b) N = 2, P = 1.0                                (c) N = 2, P = 1.5
+         30                                                 30                                                30
+
+
+          0                                                  0                                                 0
+Score
+
+
+
+
+                                                   Score
+
+
+
+
+                                                                                                     Score
+        −30                         QTRAN-alt              −30                        QTRAN-alt              −30                        QTRAN-alt
+                                    QTRAN-base                                        QTRAN-base                                        QTRAN-base
+                                    QMIX                                              QMIX                                              QMIX
+                                    VDN                                               VDN                                               VDN
+        −60                                                −60                                               −60
+              0            3×106           6×106                 0           5×106            107                  0           5×106            107
+                        Training step                                     Training step                                     Training step
+
+                   (d) N = 4, P = 0.5                                (e) N = 4, P = 1.0                                (f) N = 4, P = 1.5
+
+              Figure 4. Average reward per episode on the MPP tasks with 95% confidence intervals for VDN, QMIX, and QTRAN
+
+ure 3c shows the result for a more challenging scenario of                      For the tested values of N and P , we note that the perfor-
+MGS, with each of [si ] being the same, where agents can al-                    mance gap between QTRAN-base and QTRAN-alt is influ-
+ways achieve higher performance than GS. VDN and QMIX                           enced more strongly by N . When N = 2, the gap in the
+are shown to learn only a sub-optimal policy in MGS, whose                      convergence speed between QTRAN-base and QTRAN-alt
+rewards are even smaller than those in GS. QTRAN-base                           increases as the penalty grows. Nevertheless, both al-
+and QTRAN-alt achieve significantly higher rewards, where                       gorithms ultimately turn out to train the agents to coop-
+QTRAN-alt is more stable, as expected. This is because                          erate well for every penalty value tested. On the other
+QTRAN-alt’s alternative loss increases the gap between Q0jt                     hand, with N = 4, the gap of convergence speed between
+for non-optimal and optimal actions, and prevents it from                       QTRAN-base and QTRAN-alt becomes larger. With more
+being updated to an undesirable policy.                                         agents, as shown in Figures 4d and 4e, QTRAN-alt achieves
+                                                                                higher scores than QTRAN-base does, and QTRAN-base
+Modified predator-prey Figure 4 shows the performance                           requires longer times to reach positive scores. Figure 4f
+of the three algorithms for six settings with different N and                   shows that QTRAN-base does not achieve a positive reward
+P values, where all results demonstrate the superiority of                      until the end, implying that QTRAN-base fails to converge,
+QTRAN to VDN and QMIX. In Figures 4a and 4d with                                whereas QTRAN-alt’s score increases, with training steps
+low penalties P , all three algorithms learn the policy that                    up to 107 .
+catches the prey well and thus obtain high rewards. How-
+ever, again, the speed in finding the policy in VDN and                         5. Conclusion
+QMIX is slower than that in QTRAN. As the penalty P
+grows and exacerbates the non-monotonic characteristic of                       This paper presented QTRAN, a learning method to fac-
+the environment, we observe a larger performance gap be-                        torize the joint action-value functions of a wide variety
+tween QTRAN and the two other algorithms. As shown in                           of MARL tasks. QTRAN takes advantage of centralized
+Figures 4b and 4c, even for a large penalty, QTRAN agents                       training and fully decentralized execution of the learned
+still cooperate well to catch the prey. However, in VDN                         policies by appropriately transforming and factorizing the
+and QMIX, agents learn to work together with somewhat                           joint action-value function into individual action-value func-
+limited coordination, so that they do not actively try to catch                 tions. Our theoretical analysis demonstrates that QTRAN
+the prey and instead attempt only to minimize the penalty-                      handles a richer class of tasks than its predecessors, and our
+receiving risk. In Figures 4e and 4f, when the number of                        simulation results indicate that QTRAN outperforms VDN
+agents N grows, VDN and QMIX do not cooperate at all                            and QMIX by a substantial margin, especially so when the
+and learn only a sub-optimal policy: running away from the                      game exhibits more severe non-monotonic characteristics.
+prey to minimize the risks of being penalized.
+         QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+Acknowledgements                                                Kok, J. R. and Vlassis, N. Collaborative multiagent rein-
+                                                                  forcement learning by payoff propagation. Journal of
+This work was supported by Institute for Information &            Machine Learning Research, 7(Sep):1789–1828, 2006.
+communications Technology Planning & Evaluation(IITP)
+grant funded by the Korea government(MSIT) (No.2018-            Koller, D. and Parr, R. Computing factored value functions
+0-00170,Virtual Presence in Moving Objects through 5G             for policies in structured mdps. In Proceedings of IJCAI,
+(PriMo-5G))                                                       pp. 1332–1339, 1999.
+This research was supported by Basic Science Research
+                                                                Lillicrap, T. P., Hunt, J. J., Pritzel, A., Heess, N., Erez,
+Program through the National Research Foundation of Ko-
+                                                                  T., Tassa, Y., Silver, D., and Wierstra, D. Continuous
+rea(NRF) funded by the Ministry of Science and ICT(No.
+                                                                  control with deep reinforcement learning. arxiv preprint
+2016R1A2A2A05921755)
+                                                                  arXiv:1509.02971, 2015.
+
+References                                                      Lowe, R., WU, Y., Tamar, A., Harb, J., Pieter Abbeel,
+                                                                  O., and Mordatch, I. Multi-agent actor-critic for mixed
+Chen, Y., Zhou, M., Wen, Y., Yang, Y., Su, Y., Zhang,
+                                                                  cooperative-competitive environments. In Proceedings of
+  W., Zhang, D., Wang, J., and Liu, H. Factorized q-
+                                                                  NIPS, pp. 6379–6390, 2017.
+  learning for large-scale multi-agent systems. arXiv
+  preprint arXiv:1809.03738, 2018.                              Mnih, V., Kavukcuoglu, K., Silver, D., Rusu, A. A., Veness,
+Foerster, J., Assael, I. A., de Freitas, N., and Whiteson,       J., Bellemare, M. G., Graves, A., Riedmiller, M., Fidje-
+  S. Learning to communicate with deep multi-agent rein-         land, A. K., Ostrovski, G., et al. Human-level control
+  forcement learning. In Proceedings of the Advances in          through deep reinforcement learning. Nature, 518(7540):
+  Neural Information Processing Systems, pp. 2137–2145,          529, 2015.
+  2016.
+                                                                Oliehoek, F. A., Spaan, M. T., and Vlassis, N. Optimal and
+Foerster, J. N., Farquhar, G., Afouras, T., Nardelli, N., and     approximate q-value functions for decentralized pomdps.
+  Whiteson, S. Counterfactual multi-agent policy gradients.       Journal of Artificial Intelligence Research, 32:289–353,
+  In Proceedings of AAAI, 2018.                                   2008.
+
+Guestrin, C., Koller, D., and Parr, R. Multiagent planning      Oliehoek, F. A., Amato, C., et al. A concise introduction to
+ with factored mdps. In Proceedings of the Advances in            decentralized POMDPs, volume 1. Springer, 2016.
+ Neural Information Processing Systems, pp. 1523–1530,
+                                                                Omidshafiei, S., Pazis, J., Amato, C., How, J. P., and Vian,
+  2002a.
+                                                                 J. Deep decentralized multi-task multi-agent reinforce-
+Guestrin, C., Lagoudakis, M., and Parr, R. Coordinated           ment learning under partial observability. arxiv preprint
+  reinforcement learning. In Proceedings of ICML, pp.            arXiv:1703.06182, 2017.
+  227–234, 2002b.
+                                                                Rashid, T., Samvelyan, M., Schroeder, C., Farquhar, G.,
+Gupta, J. K., Egorov, M., and Kochenderfer, M. Cooperative        Foerster, J., and Whiteson, S. QMIX: Monotonic value
+  multi-agent control using deep reinforcement learning. In       function factorisation for deep multi-agent reinforcement
+  Proceedings of International Conference on Autonomous           learning. In Proceedings of ICML, 2018.
+ Agents and Multiagent Systems, 2017.
+                                                                Silver, D., Huang, A., Maddison, C. J., Guez, A., Sifre, L.,
+HolmesParker, C., Taylor, M., Zhan, Y., and Tumer, K.             Van Den Driessche, G., Schrittwieser, J., Antonoglou, I.,
+  Exploiting structure and agent-centric rewards to promote        Panneershelvam, V., Lanctot, M., et al. Mastering the
+  coordination in large multiagent systems. In Proceedings         game of go with deep neural networks and tree search.
+  of Adaptive and Learning Agents Workshop, 2014.                 Nature, 529(7587):484, 2016.
+
+Jiang, J. and Lu, Z. Learning attentional communication         Silver, D., Schrittwieser, J., Simonyan, K., Antonoglou,
+   for multi-agent cooperation. In Proceedings of NIPS, pp.        I., Huang, A., Guez, A., Hubert, T., Baker, L., Lai, M.,
+   7265–7275, 2018.                                                Bolton, A., et al. Mastering the game of go without
+                                                                   human knowledge. Nature, 550(7676):354, 2017.
+Kim, D., Moon, S., Hostallero, D., Kang, W. J., Lee, T.,
+  Son, K., and Yi, Y. Learning to schedule communication        Stone, P. and Veloso, M. Multiagent systems: A survey from
+  in multi-agent reinforcement learning. In Proceedings of        a machine learning perspective. Autonomous Robots, 8
+  ICLR, 2019.                                                     (3):345–383, 2000.
+         QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+Sukhbaatar, S., Fergus, R., et al. Learning multiagent com-
+  munication with backpropagation. In Proceedings of the
+  Advances in Neural Information Processing Systems, pp.
+  2244–2252, 2016.
+Sunehag, P., Lever, G., Gruslys, A., Czarnecki, W. M.,
+  Zambaldi, V. F., Jaderberg, M., Lanctot, M., Sonnerat,
+  N., Leibo, J. Z., Tuyls, K., and Graepel, T. Value-
+  decomposition networks for cooperative multi-agent
+  learning based on team reward. In Proceedings of AA-
+  MAS, pp. 2085–2087, 2018.
+Tampuu, A., Matiisen, T., Kodelja, D., Kuzovkin, I., Korjus,
+  K., Aru, J., Aru, J., and Vicente, R. Multiagent cooper-
+  ation and competition with deep reinforcement learning.
+  PloS one, 12(4):e0172395, 2017.
+Tan, M. Multi-agent reinforcement learning: Independent
+  vs. cooperative agents. In Proceedings of ICML, pp. 330–
+  337, 1993.
+
+Wang, Z., Schaul, T., Hessel, M., Hasselt, H., Lanctot, M.,
+ and Freitas, N. Dueling network architectures for deep re-
+ inforcement learning. In Proceedings of the 33rd Interna-
+ tional Conference on Machine Learning, pp. 1995–2003,
+ 2016.
+
+Watkins, C. J. C. H. Learning from delayed rewards. PhD
+ thesis, King’s College, Cambridge, 1989.
+Wei, E. and Luke, S. Lenient learning in independent-learner
+ stochastic cooperative games. The Journal of Machine
+ Learning Research, 17(1):2914–2955, 2016.
+
+Wei, E., Wicke, D., Freelan, D., and Luke, S. Multiagent
+ soft q-learning. arXiv preprint arXiv:1804.09817, 2018.
+Yang, Y., Luo, R., Li, M., Zhou, M., Zhang, W., and Wang,
+  J. Mean field multi-agent reinforcement learning. In
+  Proceedings of ICML, pp. 5567–5576, 2018.
+           QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+
+                                                      Supplementary
+A. QTRAN Training Algorithm
+The training algorithms for QTRAN-base and QTRAN-alt are provided in Algorithm 1.
+
+Algorithm 1 QTRAN-base and QTRAN-alt
+ 1: Initialize replay memory D
+ 2: Initialize [Qi ], Qjt , and Vjt with random parameters θ
+ 3: Initialize target parameters θ − = θ
+ 4: for episode = 1 to M do
+ 5:    Observe initial state s0 and observation o0 = [O(s0 , i)]N           i=1 for each agent i
+ 6:    for t = 1 to T do
+ 7:       With probability  select a random action uti
+ 8:       Otherwise uti = arg maxuti Qi (τit , uti ) for each agent i
+ 9:       Take action ut , and retrieve next observation and reward (ot+1 , rt )
+10:       Store transition (τ t , ut , rt , τ t+1 ) in D
+11:       Sample a random minibatch of transitions (τ , u, r, τ 0 ) from D
+12:       Set y dqn (r, τ 0 ; θ − ) = r + γQjt (τ 0 , ū0 ; θ − ), ū0 = [arg maxui Qi (τi0 , ui ; θ − )]N
+                                                                                                         i=1 ,
+13:       If QTRAN-base, update θ by minimizing the loss:
+
+                                         L(τ , u, r, τ 0 ; θ) = Ltd + λopt Lopt + λnopt Lnopt ,
+                                                                                                    2
+                                       Ltd (τ , u, r, τ 0 ; θ) = Qjt (τ , u) − y dqn (r, τ 0 ; θ − ) ,
+                                                                                                         2
+                                      Lopt (τ , u, r, τ 0 ; θ) = Q0jt (τ , ū) − Q̂jt (τ , ū) + Vjt (τ ) ,
+                                                                                                             2
+                                     Lnopt (τ , u, r, τ 0 ; θ) = min Q0jt (τ , u) − Q̂jt (τ , u) + Vjt (τ ), 0
+                                                                       
+                                                                                                                  .
+
+14:        If QTRAN-alt, update θ by minimizing the loss:
+
+                              L(τ , u, r, τ 0 ; θ) = Ltd + λopt Lopt + λnopt-min Lnopt-min ,
+                                                                                         2
+                            Ltd (τ , u, r, τ 0 ; θ) = Qjt (τ , u) − y dqn (r, τ 0 ; θ − ) ,
+                                                                                              2
+                           Lopt (τ , u, r, τ 0 ; θ) = Q0jt (τ , ū) − Q̂jt (τ , ū) + Vjt (τ ) ,
+                                                          N                                                               2
+                                             0        1 X             
+                                                                           0
+                       Lnopt-min (τ , u, r, τ ; θ) =             min Qjt (τ , ui , u−i ) − Q̂jt (τ , ui , u−i ) + Vjt (τ )     .
+                                                      N i=1 ui ∈U
+
+15:      Update target network parameters θ− = θ with period I
+16:   end for
+17: end for
+
+
+
+B. Proofs
+In this section, we provide the proofs of theorems and propositions coming from theorems.
+
+B.1. Proof of Theorem 1
+Theorem 1. A factorizable joint action-value function Qjt (τ , u) is factorized by [Qi (τi , ui )], if
+
+
+                                                                                 0        u = ū,                                  (4a)
+                                                                             
+                          PN
+                             i=1 Qi (τi , ui ) − Qjt (τ , u) + Vjt (τ ) =
+                                                                                 ≥0       u 6= ū,                                 (4b)
+          QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+where
+                                                                                      N
+                                                                                      X
+                                             Vjt (τ ) = max Qjt (τ , u) −                   Qi (τi , ūi ).
+                                                              u
+                                                                                      i=1
+
+
+Proof. Theorem 1 shows that if condition (4) holds, then Qi satisfies IGM. Thus, for some given Qi that satisfies (4), we
+will show that arg maxu Qjt (τ , u) = ū. Recall that ūi = arg maxui Qi (τi , ui ) and ū = [ūi ]N
+                                                                                                   i=1 ,.
+
+                                                            N
+                                                            X
+                                         Qjt (τ , ū) =           Qi (τi , ūi ) + Vjt (τ )     (From (4a))
+                                                            i=1
+                                                            N
+                                                            X
+                                                      ≥           Qi (τi , ui ) + Vjt (τ )
+                                                            i=1
+                                                      ≥ Qjt (τ , u)         (From (4b)).
+It means that the set of optimal local actions ū maximizes Qjt , showing that Qi satisfies IGM. This completes the proof.
+
+B.2. Necessity in Theorem 1 Under Affine-transformation
+As mentioned in Section 3.1, the conditions (4) in Theroem 1 are necessary under an affine transformation. The necessary
+condition shows that for some given factorizable Qjt , there exists Qi that satisfies (4), which guides us to design the QTRAN
+                                                                                                                  ×N
+neural network. Note that the affine transformation φ is φ(Q) = A · Q + B, where A = [aii ] ∈ RN                +     is a symmetric
+diagonal matrix with aii > 0, ∀i and B = [bi ] ∈ RN . To abuse notation, let φ(Qi (τi , ui )) = aii Qi (τi , ui ) + bi .
+Proposition 1. If Qjt (τ , u) is factorized by [Qi (τi , ui )], then there exists an affine transformation φ(Q) such that Qjt (τ , u)
+is factorized by [φ(Qi (τi , ui ))] and the condition (4) holds by replacing [Qi (τi , ui )] with [φ(Qi (τi , ui ))].
+
+Proof. To prove, we will show that, for the factors [Qi ] of Qjt , there exists an affine transformation of Qi that also satisfies
+conditions (4).
+By definition, if Qjt (τ , u) is factorized by [Qi (τi , ui )], then the followings hold: (i) Qjt (τ , ū) − maxu Qjt (τ , u) = 0,
+                                              PN
+(ii) Qjt (τ , u) − Qjt (τ , ū) < 0, and (iii) i=1 (Qi (τi , ui ) − Qi (τi , ūi )) < 0 if u 6= ū. Now, we consider an affine
+transformation, in which aii = α and bi = 0 ∀i, where α > 0, and φ(Qi ) = αQi with this transformation. Since this is
+a linearly scaled transformation, it satisfies the IGM condition, and thus (4a) holds. We also prove that φ(Qi ) satisfies
+condition (4a) by showing that there exists a constant α small enough such that
+        N
+        X                                                     N
+                                                              X
+              αQi (τi , ui ) − Qjt (τ , u) + Vjt (τ , u) =           α(Qi (τi , ui ) − Qi (τi , ūi )) − (Qjt (τ , u) − Qjt (τ , ū)) ≥ 0,
+        i=1                                                    i=1
+                                                                                            PN
+where Vjt (τ ) is redefined for linearly scaled αQi as maxu Qjt (τ , u) −                       i=1 αQi (τi , ūi ). This completes the proof.
+
+
+B.3. Special Case: Theorem 1 in Fully Observable Environments
+If the task is a fully observable case (observation function is bijective for all i), the state-value network is not required
+and all Vjt (τ ) values can be set to zero. We show that Theorem 1 holds equally for the case where Vjt (τ ) = 0 for a fully
+observable case. This fully observable case is applied to our example of the simple matrix game. The similar necessity
+under an affine-transformation holds in this case.
+Theorem 1a. (Fully observable case) A factorizable joint action-value function Qjt (τ , u) is factorized by [Qi (τi , ui )], if
+                                          N
+                                                                                   0          u = ū,
+                                                                                  
+                                          X                                                                                                      (9a)
+                                                Qi (τi , ui )−Qjt (τ , u) =
+                                          i=1
+                                                                                      ≥ 0 u 6= ū,                                               (9b)
+
+Proof. We will show arg maxu Qjt (τ , u) = ū (i.e., IGM), if the (9) holds.
+                                                      N
+                                                      X                        N
+                                                                               X
+                                     Qjt (τ , ū) =         Qi (τi , ūi ) ≥         Qi (τi , ui ) ≥ Qjt (τ , u).
+                                                      i=1                      i=1
+          QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+The first equality comes from (9a), and the last inequality comes from (9b). We note that arg maxu Qjt (τ , u) =
+[arg maxui Qi (τi , ui )], so this completes the proof.
+
+
+Proposition 1a. If Qjt (τ , u) is factorized by [Qi (τi , ui )], then there exists an affine transformation φ(Q), such that
+Qjt (τ , u) is factorized by [φ(Qi (τi , ui ))] and condition (9) holds by replacing [Qi (τi , ui )] with [φ(Qi (τi , ui ))].
+
+
+Proof. From Theorem 1a, if Qjt (τ , u) is factorizable, then there exist [Qi ] satisfying both IGM and (9). Now, we define
+an additive transformation φ0i (Qi (τi , ui )) = Qi (τi , ui ) + N1 maxu Qjt (τ , u) − Qi (τi , ūi ) for a given τi , which is uniquely
+defined for fully observable cases. [φ0i (Qi (τi , ui ))] also satisfy IGM, and the left-hand side of (9) can be rewritten as:
+
+              N
+              X                                     N
+                                                    X                                          N
+                                                                                               X
+                    Qi (τi , ui ) − Qjt (τ , u) −         Qi (τi , ūi ) + max Qjt (τ , u) =         φ0i (Qi (τi , ui )) − Qjt (τ , u)
+                                                                          u
+              i=1                                   i=1                                        i=1
+
+
+So there exist individual action-value functions [φ0i (Q0i (τi , ui ))] that satisfy both IGM and (9), where Vjt (τ ) is redefined as
+0. This completes the proof of the necessity.
+
+
+
+B.4. Proof of Theorem 2
+Theorem 2. The statement presented in Theorem 1 and the necessary condition of Theorem 1 holds by replacing (4b) with
+the following (7): if u 6= ū,
+                               h                                                     i
+                            min Q0jt (τ , ui , u−i ) − Qjt (τ , ui , u−i ) + Vjt (τ ) = 0,            ∀i = 1, . . . , N,                 (7)
+                           ui ∈U
+
+
+where u−i = (u1 , . . . , ui−1 , ui+1 , . . . , uN ), i.e., the action vector except for i’s action.
+
+
+Proof. (⇒) Recall that condition (7) is stronger than (4b), which is itself sufficient for Theorem 1. Therefore, by transitivity,
+condition (7) is sufficient for Theorem 2. Following paragraphs focus on the other direction, i.e., how condition (7) is
+necessary for Theorem 2.
+(⇐) We prove that, if there exist individual action-value functions satisfying condition (4), then there exists an individual
+action-value function Q0i that satisfies (7). In order to show the existence of such Q0i , we propose a way to construct Q0i .
+We first consider the case with N = 2 and then generalize the result for any N . The condition (7) for N = 2 is denoted as:
+                                      h                                                             i
+                                   min Q1 (τ1 , u1 ) + Q2 (τ2 , u2 ) − Qjt (τ , u1 , u2 ) + Vjt (τ ) = 0.
+                                   ui ∈U
+
+
+Since this way of constructing Q0i is symmetric for
+                                                 h all i, we present its construction only for u1 withouti loss of generality.
+For Q1 and Q2 satisfying (4), if β := minu1 ∈U Q1 (τ1 , u1 ) + Q2 (τ2 , u2 ) − Qjt (τ , u1 , u2 ) + Vjt (τ ) > 0 for given τ
+and u2 , then u2 6= ū2 . This is because Q1 (τ1 , ū1 ) + Q2 (τ2 , ū2 ) − Qjt (τ , ū1 , ū2 ) + Vjt (τ ) = 0 by condition (4a). Now,
+we replace Q2 (τ2 , u2 ) with Q02 (τ2 , u2 ) = Q2 (τ2 , u2 ) − β. Since Q2 (τ2 , ū2 ) > Q2 (τ2 , u2 ) > Q2 (τ2 , u2 ) − β, it does not
+change the optimal action and other conditions. Then, (7) is satisfied for given τ and u2 . By repeating this replacement
+process, we can construct Q0i that satisfies condition (7).
+                                               h                                                       i
+More generally, when N 6= 2, if minui ∈U Q0jt (τ , ui , u−i ) − Qjt (τ , ui , u−i ) + Vjt (τ ) = β > 0 for given τ and u−i ,
+then there exists some j 6= i that satisfies uj 6= ūj . Therefore, by repeating the same process as when N = 2 through j,
+we can construct Q0i for all i, and this confirms that individual action-value functions satisfying condition (7) exist. This
+completes the proof.
+             QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+B.4.1. P ROCESS OF CONSTRUCTING Q0i IN THE MATRIX GAME USING T HEOREM 2
+We now present the process of how we have demonstrated through the example in Section 3.5. In the original matrix shown
+in Tables 2a and 2d, the second row does not satisfy the condition (7), and β = 0.23 for u1 = B. Then, we replace Q1 (B)
+as shown in Table 2e. Table 2b shows that its third row does not satisfy the condition (7). Finally, we replace Q1 (C) as
+shown in Table 2f. Then, the resulting Table 2c satisfies the condition (7).
+
+        u2                                                     u2                                                 u2
+                   A         B         C                                 A        B          C                            A         B         C
+      u1                                                     u1                                                 u1
+        A        0.00       18.14    18.14                      A       0.00     18.14      18.14                 A     0.00      18.14     18.14
+        B        14.11      0.23      0.23                      B      13.88      0.00      0.00                  B     13.88     0.00       0.00
+        C        13.93      0.05      0.05                      C      13.93      0.05      0.05                  C     13.88     0.00       0.00
+
+                 (a) Q0jt − Qjt                            (b) Q0jt − Qjt after one replacement            (c) Q0jt − Qjt after two replacements
+        Q2                                                    Q2                                               Q2
+                 4.16(A)   2.29(B)   2.29(C)                          4.16(A)   2.29(B)    2.29(C)                     4.16(A)   2.29(B)   2.29(C)
+      Q1                                                    Q1                                               Q1
+     3.84(A)      8.00      6.13      6.12                 3.84(A)     8.00      6.13       6.12            3.84(A)     8.00      6.13      6.12
+     -2.06(B)     2.10      0.23      0.23                 -2.29(B)    1.87      0.00       0.00            -2.29(B)    1.87      0.00      0.00
+     -2.25(C)     1.92      0.04      0.04                 -2.25(C)    1.92      0.04       0.04            -2.30(C)    1.87      -0.01     -0.01
+
+                (d) Q1 , Q2 , Q0jt                        (e) Q1 , Q2 , Q0jt after one replacement        (f) Q1 , Q2 , Q0jt after two replacements
+
+                 Table 2. The process of replacing [Qi ] satisfying the condition (9b) with [Qi ] satisfying the condition (7)
+
+
+C. Details of environments and implementation
+C.1. Environment
+Matrix game In order to see the impact of QTRAN-alt, we train the agents in a single state matrix game where two agents
+each have 21 actions. Each agent i takes action ui , ranging over ∈ {0, ..., 20}. The reward value R for a joint action is given
+as follows:
+
+                                                                            2         2
+                                                                    15 − u1       5 − u2
+                                               f1 (u1 , u2 ) = 5 −             −
+                                                                        3            3
+                                                                            2          2
+                                                                      5 − u1      15 − u2
+                                               f2 (u1 , u2 ) = 10 −            −
+                                                                         1            1
+                                                   R(u1 , u2 ) = max(f1 (u1 , u2 ), f2 (u1 , u2 ))
+
+
+                                                                                                          10.0
+                                       20
+                                                                                                          7.5
+
+                                       15                                                                 5.0
+
+                                                                                                          2.5
+
+                                       10                                                                 0.0
+
+                                                                                                            2.5
+
+                                         5                                                                  5.0
+
+                                                                                                            7.5
+                                         0                                                                  10.0
+                                               0            5           10            15             20
+
+Figure 5. x-axis and y-axis: agents 1 and 2’s actions, respectively. Colored values represent the reward for selected actions.
+
+Figure 5 shows reward for selected action. Colored values represent the values. In the simple matrix game, the reward
+function has a global maximum point at (u1 , u2 ) = (5, 15) and a local maximum point at (u1 , u2 ) = (15, 5).
+         QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+Multi-domain Gaussian Squeeze We adopt and modify Gaussian Squeeze, where agent numbers (N = 10) and action
+spaces (ui ∈ {0, 1, ..., 9}) are much larger than a simple matrix game. In MGS, each of the ten agents has its own amount
+of unit-level resource si ∈ [0, 0.2] given by the environment a priori. This task covers a fully observable case where all
+agents can see the entire state. We assume that there exist K domains,
+                                                               P       where the above resource allocation takes place. The
+joint action u determines the overall resource usage x(u) = i si × ui . Reward is given as a function of resource usage
+                       PK               2    2
+as follows: G(u) = k=1 xe−(x−µk ) /σk . We test with two different settings: (i) K = 1, µ1 = 8, σ1 = 1 as shown in
+Figure 6a, and (ii) K = 2, µ1 = 8, σ1 = 0.5, µ2 = 5, σ2 = 1 as shown in Figure 6b. In the second setting, there are two
+local maxima for resource x. The maximum on the left is relatively easy to find through exploration – as manifested in the
+greater variance of the Gaussian distribution, but the maximum reward — as represented by the lower peak — is relatively
+low. On the other hand, the maximum on the right is more difficult to find through exploration, but it offers higher reward.
+
+                 9                                                           9
+                 8                                                           8
+                 7                                                           7
+                 6                                                           6
+                 5                                                           5
+             Score
+
+
+
+
+                                                                         Score
+                 4                                                           4
+                 3                                                           3
+                 2                                                           2
+                 1                                                           1
+                 00      2       4       6       8      10                   00          2       4   6      8        10
+                               Resource                                                        Resource
+                         (a) Gaussian Squeeze                                    (b) Multi-domain Gaussian Squeeze
+
+                                 Figure 6. Gaussian Squeeze and Multi-domain Gaussian Squeeze
+
+
+Modified predator-prey Predator-prey involves a grid world, in which multiple predators attempt to capture randomly
+moving prey. Agents have a 5 × 5 view and select one of five actions ∈ {Left, Right, Up, Down, Stop} at each time step.
+Prey move according to selecting a uniformly random action at each time step. We define the “catching” of a prey as when
+the prey is within the cardinal direction of at least one predator. Each agent’s observation includes its own coordinates, agent
+ID, and the coordinates of the prey relative to itself, if observed. The agents can separate roles even if the parameters of the
+neural networks are shared by agent ID. We test with two different grid worlds: (i) a 5 × 5 grid world with two predators
+and one prey, and (ii) a 7 × 7 grid world with four predators and two prey. We modify the general predator-prey, such that a
+positive reward is given only if multiple predators catch a prey simultaneously, requiring a higher degree of cooperation. The
+predators get a team reward of 1 if two or more catch a prey at the same time, but they are given negative reward −P , if only
+one predator catches the prey as shown in Figure 7. We experimented with three varying P vales, where P = 0.5, 1.0, 1.5.
+The terminating condition of this task is when a prey is caught with more than one predator. The prey that has been caught is
+regenerated at random positions whenever the task terminates, and the game proceeds over fixed 100 steps.
+
+
+
+
+                                     P       A                                       P       A              A : Agent (Predator)
+
+                                     A                                                                       P : Prey
+
+                                                                           A
+
+
+
+                               Reward = +1                                       Reward = -P
+
+                                                 Figure 7. Predator-prey environment
+         QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+C.2. Experiment details
+Matrix game Table 3 shows the values of the hyperparameters for the training in the matrix game environment. Individual
+action-value networks, which are common in all VDN, QMIX, and QTRAN, each consist of two hidden layers. In addition
+to the individual Q-networks, QMIX incorporates a monotone network with one hidden layer, and the weights and biases
+of this network are produced by separate hypernetworks. QTRAN has an additional joint action-value network with two
+hidden layers. All hidden layer widths are 32, and all activation functions are ReLU. All neural networks are trained using
+the Adam optimizer. We use -greedy action selection with  = 1 independently for exploration.
+
+             Hyperparameter         Value     Description
+             training step          20000     Maximum time steps until the end of training
+             learning rate          0.0005    Learning rate used by Adam optimizer
+             replay buffer size     20000     Maximum number of samples to store in memory
+             minibatch size         32        Number of samples to use for each update
+             λopt , λnopt           1,1       Weight constants for loss functions Lopt , Lnopt and Lnopt−min
+                                        Table 3. Hyperparameters for matrix game training
+
+Multi-domain Gaussian Squeeze Table 4 shows the values of the hyperparameters for the training in the MGS environ-
+ment. Each individual action-value network consists of three hidden layers. In addition to the individual Q-networks, QMIX
+incorporates a monotone network with one hidden layer, and the weights and biases of this network are produced by separate
+hypernetworks. QTRAN has an additional joint action-value network with two hidden layers. All hidden layer widths are
+64, and all activation functions are ReLU. All neural networks are trained using the Adam optimizer. We use -greedy action
+selection with decreasing  from 1 to 0.1 for exploration.
+
+          Hyperparameter            Value       Description
+          training step             1000000     Maximum time steps until the end of training
+          learning rate             0.0005      Learning rate used by Adam optimizer
+          replay buffer size        200000      Maximum number of samples to store in memory
+          final exploration step    500000      Number of steps over which  is annealed to the final value
+          minibatch size            32          Number of samples to use for each update
+          λopt , λnopt              1,1         Weight constants for loss functions Lopt , Lnopt and Lnopt−min
+                                   Table 4. Hyperparameters for Multi-domain Gaussian Squeeze
+
+Modified predator-prey Table 5 shows the values of the hyperparameters for the training in the modified predator-prey
+environment. Each individual action-value network consists of three hidden layers. In addition to the individual Q-networks,
+QMIX incorporates a monotone network with one hidden layer, and the weights and biases of this network are produced
+by separate hypernetworks. QTRAN has additional joint action-value network with two hidden layers. All hidden layer
+widths are 64, and all activation functions are ReLU. All neural networks are trained using the Adam optimizer. We use
+-greedy action selection with decreasing  from 1 to 0.1 for exploration. Since history is not very important in this task, our
+experiments use feed-forward policies, but our method is also applicable with recurrent policies.
+
+          Hyperparameter            Value        Description
+          training step             10000000     Maximum time steps until the end of training
+          discount factor           0.99         Importance of future rewards
+          learning rate             0.0005       Learning rate used by Adam optimizer
+          target update period      10000        Target network update period to track learned network
+          replay buffer size        1000000      Maximum number of samples to store in memory
+          final exploration step    3000000      Number of steps over which  is annealed to the final value
+          minibatch size            32           Number of samples to use for each update
+          λopt , λnopt              1,1          Weight constants for loss functions Lopt , Lnopt and Lnopt−min
+                                       Table 5. Hyperparameters for predator-prey training
+                     QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+D. Additional results for matrix games
+Table 6 shows the comparison between the final performance levels of VDN, QMIX, and QTRAN-base for 310 3 × 3
+random matrix games, where each value of the payoff matrix is given as a random parameter from 0 to 1. Experimental
+settings are the same as in the previous matrix game. Since matrix games always satisfy IGM conditions, QTRAN-base
+always trains the optimal action for all 310 cases. On the other hand, VDN and QMIX were shown to be unable to learn an
+optimal policy for more than half of non-monotonic matrix games.
+We briefly analyze the nature of the structural constraints assumed by VDN and QMIX, namely, additivity and monotonicity
+of the joint action-value functions. There have been only 19 cases in which the results of VDN and QMIX differ from each
+other. Interestingly, for a total of five cases, the performance of VDN is better than QMIX. QMIX was shown to outperform
+VDN in more cases (14) than the converse case (5). This supports the idea that the additivity assumption imposed by VDN
+on the joint action-value functions is indeed stronger than the monotonicity assumption imposed by QMIX.
+
+                                         QTRAN=VDN=QMIX                                      QTRAN>VDN=QMIX                                          VDN>QMIX                       QMIX>VDN
+                                               114                                                 177                                                   5                             14
+
+                                                               Table 6. Final performance comparison with 310 random matrices
+
+Figures 8-9 show the joint action-value function of VDN and QMIX, and Figures 10-11 show the transformed joint
+action-value function of QTRAN-base and QTRAN-alt for a matrix game where two agents each have 20 actions. In the
+result, VDN and QMIX can not recover joint action-value, and these algorithms learn sub-optimal policy u1 , u2 = (15, 5).
+In the other hand, the result shows that QTRAN-base and QTRAN-alt successfully learn the optimal action, but QTRAN-alt
+has the ability to more accurately distinguish action from non-optimal action as shown in Figure 11.
+
+ 20                             20                             20                            20                             20                            20                            20                             20
+
+
+ 15                             15                             15                            15                             15                            15                            15                             15
+
+
+ 10                             10                             10                            10                             10                            10                            10                             10
+
+
+  5                              5                              5                             5                              5                             5                             5                              5
+
+
+  0                              0                              0                             0                              0                             0                             0                              0
+      0     5   10    15   20        0      5   10   15   20        0     5   10   15   20        0      5   10   15   20        0     5   10   15   20        0     5   10   15   20        0      5   10   15   20        0      5   10   15   20
+
+
+
+
+          (a) 1000 step                  (b) 2000 step                  (c) 3000 step                 (d) 4000 step                  (e) 5000 step                 (f) 6000 step                 (g) 7000 step                  (h) 8000 step
+                           Figure 8. x-axis and y-axis: agents 1 and 2’s actions. Colored values represent the values of Qjt for VDN
+ 20                             20                             20                            20                             20                            20                            20                             20
+
+
+ 15                             15                             15                            15                             15                            15                            15                             15
+
+
+ 10                             10                             10                            10                             10                            10                            10                             10
+
+
+  5                              5                              5                             5                              5                             5                             5                              5
+
+
+  0                              0                              0                             0                              0                             0                             0                              0
+      0     5   10    15   20        0      5   10   15   20        0     5   10   15   20        0      5   10   15   20        0     5   10   15   20        0     5   10   15   20        0      5   10   15   20        0      5   10   15   20
+
+
+
+
+          (a) 1000 step                  (b) 2000 step                  (c) 3000 step                 (d) 4000 step                  (e) 5000 step                 (f) 6000 step                 (g) 7000 step                  (h) 8000 step
+                           Figure 9. x-axis and y-axis: agents 1 and 2’s actions. Colored values represent the values of Qjt for QMIX
+ 20                             20                             20                            20                             20                            20                            20                             20
+
+
+ 15                             15                             15                            15                             15                            15                            15                             15
+
+
+ 10                             10                             10                            10                             10                            10                            10                             10
+
+
+  5                              5                              5                             5                              5                             5                             5                              5
+
+
+  0                              0                              0                             0                              0                             0                             0                              0
+      0     5   10    15   20        0      5   10   15   20        0     5   10   15   20        0      5   10   15   20        0     5   10   15   20        0     5   10   15   20        0      5   10   15   20        0      5   10   15   20
+
+
+
+
+          (a) 1000 step                  (b) 2000 step                  (c) 3000 step                 (d) 4000 step                  (e) 5000 step                 (f) 6000 step                 (g) 7000 step                  (h) 8000 step
+                     Figure 10. x-axis and y-axis: agents 1 and 2’s actions. Colored values represent the values of Q0jt for QTRAN-base
+ 20                             20                             20                            20                             20                            20                            20                             20
+
+
+ 15                             15                             15                            15                             15                            15                            15                             15
+
+
+ 10                             10                             10                            10                             10                            10                            10                             10
+
+
+  5                              5                              5                             5                              5                             5                             5                              5
+
+
+  0                              0                              0                             0                              0                             0                             0                              0
+      0     5   10    15   20        0      5   10   15   20        0     5   10   15   20        0      5   10   15   20        0     5   10   15   20        0     5   10   15   20        0      5   10   15   20        0      5   10   15   20
+
+
+
+
+          (a) 1000 step                  (b) 2000 step                  (c) 3000 step                 (d) 4000 step                  (e) 5000 step                 (f) 6000 step                 (g) 7000 step                  (h) 8000 step
+                     Figure 11. x-axis and y-axis: agents 1 and 2’s actions. Colored values represent the values of Q0jt for QTRAN-alt
+                  QTRAN: Learning to Factorize with Transformation for Cooperative Multi-Agent Reinforcement Learning
+
+         30                                                 30                                                30
+                                                                                                                       QTRAN-alt
+                                                                                                                       QTRAN-base
+                                                                                                                       Dec-HDRQN
+         15                                                 15                                                15       QMIX
+Score
+
+
+
+
+                                                   Score
+
+
+
+
+                                                                                                     Score
+                                                                                                                       VDN
+                                    QTRAN-alt
+          0                         QTRAN-base               0                       QTRAN-alt                 0
+                                    Dec-HDRQN                                        QTRAN-base
+                                    QMIX                                             Dec-HDRQN
+                                    VDN                                              QMIX
+        −15                                                −15                                               −15
+                                                                                   6 VDN
+              0           1.5×106        3.0×106                 0          1.5×10         3.0×106                 0           1.5×106        3.0×106
+                        Training step                                     Training step                                      Training step
+
+                   (a) N = 2, P = 0.5                                (b) N = 2, P = 1.0                                (c) N = 2, P = 1.5
+         30                                                 30                                                30
+
+
+          0                                                  0                                                 0
+Score
+
+
+
+
+                                                   Score
+
+
+
+
+                                                                                                     Score
+                                    QTRAN-alt                                         QTRAN-alt                                          QTRAN-alt
+        −30                         QTRAN-base             −30                        QTRAN-base             −30                         QTRAN-base
+                                    Dec-HDRQN                                         Dec-HDRQN                                          Dec-HDRQN
+                                    QMIX                                              QMIX                                               QMIX
+                                    VDN                                               VDN                                                VDN
+        −60                                                −60                                               −60
+              0            3×106           6×106                 0           5×106            107                  0            5×106            107
+                        Training step                                     Training step                                      Training step
+
+                   (d) N = 4, P = 0.5                                (e) N = 4, P = 1.0                                (f) N = 4, P = 1.5
+
+Figure 12. Average reward per episode on the MPP tasks with 95% confidence intervals for VDN, QMIX, Dec-HDRQN and QTRAN
+
+E. Comparison with other value-based methods for modified predator-prey
+Additionally, we have conducted experiments with Dec-HDRQN (Omidshafiei et al., 2017). Dec-HDRQN can indeed solve
+problems similar to ours by changing the learning rate according to TD-error without factorization. However, Dec-HDRQN
+does not take advantage of centralized training. We implemented Dec-HDRQN (α = 0.001, β = 0.0002) with modified
+predator-prey experiments and Figure 12 shows the performance of algorithms for six settings with different N and P
+values.
+First, when the complexity of the task is relatively low, Dec-HDRQN shows better performance than VDN and QMIX as
+shown in the Figure 12b. However, QTRAN performs better than Dec-HDRQN in the case. When the penalty and the
+number of agents are larger, Dec-HDRQN underperforms VDN and QMIX. Figure 12c shows Dec-HDRQN scores an
+average of nearly 0 in the case of N = 2, P = 1.5. There is a limit of Dec-HDRQN since the method is heuristic and does
+not perform centralized training. Finally, Dec-HDRQN showed slower convergence speed overall.
+

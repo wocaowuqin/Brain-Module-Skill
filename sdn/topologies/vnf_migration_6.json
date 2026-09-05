@@ -1,0 +1,25 @@
+{
+  "name": "vnf_migration_6",
+  "node_count": 6,
+  "physical_link_count": 6,
+  "default_bandwidth_mbps": 100.0,
+  "default_delay_ms": 1.0,
+  "dc_nodes_1based": [2, 3, 4, 5],
+  "source_nodes_1based": [1],
+  "nodes": [
+    {"dpid": 1, "switch": "s1", "host": "h1", "host_ip": "10.0.0.1/24", "host_port": 1},
+    {"dpid": 2, "switch": "s2", "host": "h2", "host_ip": "10.0.0.2/24", "host_port": 1},
+    {"dpid": 3, "switch": "s3", "host": "h3", "host_ip": "10.0.0.3/24", "host_port": 1},
+    {"dpid": 4, "switch": "s4", "host": "h4", "host_ip": "10.0.0.4/24", "host_port": 1},
+    {"dpid": 5, "switch": "s5", "host": "h5", "host_ip": "10.0.0.5/24", "host_port": 1},
+    {"dpid": 6, "switch": "s6", "host": "h6", "host_ip": "10.0.0.6/24", "host_port": 1}
+  ],
+  "edges": [
+    {"u": 1, "u_port": 2, "v": 2, "v_port": 2, "bandwidth_mbps": 100.0, "delay_ms": 1.0},
+    {"u": 2, "u_port": 3, "v": 3, "v_port": 2, "bandwidth_mbps": 100.0, "delay_ms": 1.0},
+    {"u": 2, "u_port": 4, "v": 4, "v_port": 2, "bandwidth_mbps": 100.0, "delay_ms": 1.0},
+    {"u": 3, "u_port": 3, "v": 5, "v_port": 2, "bandwidth_mbps": 100.0, "delay_ms": 1.0},
+    {"u": 4, "u_port": 3, "v": 5, "v_port": 3, "bandwidth_mbps": 100.0, "delay_ms": 1.0},
+    {"u": 5, "u_port": 4, "v": 6, "v_port": 2, "bandwidth_mbps": 100.0, "delay_ms": 1.0}
+  ]
+}

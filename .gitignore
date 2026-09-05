@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Environments and IDE state
+.venv/
+venv/
+.idea/
+.run/
+
+# Generated experiment output
+outputs/*
+!outputs/README.md
+artifacts/runs/*
+!artifacts/runs/.gitkeep
+logs/
+runs/
+*.log
+*.pcap
+*.pkl.tmp
+
+# Telecom Italia raw CDR exports are 20+ GB and are locally licensed inputs.
+data/telecom_italia/raw/*.txt
+data/telecom_italia/raw/*.zip
+data/telecom_italia/raw/*.gz
+
+# Local scratch and rendered QA
+tmp/
+tmp_msft/
+.tmp_*.py
+qa_*/
+_qa_*/
+.codex_*/
+temp_*.pkl
+
+# OS/editor
+.DS_Store
+Thumbs.db
+~$*
+# BMS learning artifacts
+logs/brain_ppo/
+demos/

@@ -1,0 +1,1327 @@
+{
+  "dc_nodes_1based": [
+    4,
+    5,
+    6,
+    11,
+    12,
+    14,
+    17,
+    19,
+    20,
+    22,
+    23,
+    24,
+    25,
+    26,
+    29,
+    32,
+    33,
+    35,
+    38,
+    39,
+    44,
+    45,
+    46,
+    49,
+    50
+  ],
+  "default_bandwidth_mbps": 90.0,
+  "default_delay_ms": 2.0,
+  "edges": [
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 1,
+      "u_port": 2,
+      "v": 30,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 1,
+      "u_port": 3,
+      "v": 47,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 1,
+      "u_port": 4,
+      "v": 49,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 2,
+      "u_port": 2,
+      "v": 35,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 2,
+      "u_port": 3,
+      "v": 48,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 2,
+      "u_port": 4,
+      "v": 50,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 3,
+      "u_port": 2,
+      "v": 9,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 3,
+      "u_port": 3,
+      "v": 32,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 3,
+      "u_port": 4,
+      "v": 38,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 4,
+      "u_port": 2,
+      "v": 12,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 4,
+      "u_port": 3,
+      "v": 21,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 4,
+      "u_port": 4,
+      "v": 32,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 4,
+      "u_port": 5,
+      "v": 33,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 4,
+      "u_port": 6,
+      "v": 44,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 5,
+      "u_port": 2,
+      "v": 6,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 5,
+      "u_port": 3,
+      "v": 23,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 5,
+      "u_port": 4,
+      "v": 36,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 5,
+      "u_port": 5,
+      "v": 45,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 6,
+      "u_port": 3,
+      "v": 22,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 6,
+      "u_port": 4,
+      "v": 23,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 6,
+      "u_port": 5,
+      "v": 26,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 6,
+      "u_port": 6,
+      "v": 33,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 7,
+      "u_port": 2,
+      "v": 8,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 7,
+      "u_port": 3,
+      "v": 23,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 7,
+      "u_port": 4,
+      "v": 39,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 8,
+      "u_port": 3,
+      "v": 16,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 9,
+      "u_port": 3,
+      "v": 12,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 9,
+      "u_port": 4,
+      "v": 14,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 10,
+      "u_port": 2,
+      "v": 17,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 10,
+      "u_port": 3,
+      "v": 24,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 10,
+      "u_port": 4,
+      "v": 34,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 11,
+      "u_port": 2,
+      "v": 15,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 11,
+      "u_port": 3,
+      "v": 26,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 11,
+      "u_port": 4,
+      "v": 36,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 11,
+      "u_port": 5,
+      "v": 45,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 12,
+      "u_port": 4,
+      "v": 14,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 12,
+      "u_port": 5,
+      "v": 32,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 13,
+      "u_port": 2,
+      "v": 15,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 13,
+      "u_port": 3,
+      "v": 30,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 14,
+      "u_port": 4,
+      "v": 26,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 14,
+      "u_port": 5,
+      "v": 32,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 14,
+      "u_port": 6,
+      "v": 50,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 15,
+      "u_port": 4,
+      "v": 49,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 16,
+      "u_port": 3,
+      "v": 28,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 17,
+      "u_port": 3,
+      "v": 19,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 17,
+      "u_port": 4,
+      "v": 20,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 17,
+      "u_port": 5,
+      "v": 29,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 18,
+      "u_port": 2,
+      "v": 25,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 18,
+      "u_port": 3,
+      "v": 31,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 19,
+      "u_port": 3,
+      "v": 20,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 19,
+      "u_port": 4,
+      "v": 26,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 19,
+      "u_port": 5,
+      "v": 50,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 20,
+      "u_port": 4,
+      "v": 26,
+      "v_port": 6
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 20,
+      "u_port": 5,
+      "v": 45,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 21,
+      "u_port": 3,
+      "v": 44,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 22,
+      "u_port": 3,
+      "v": 23,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 22,
+      "u_port": 4,
+      "v": 28,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 22,
+      "u_port": 5,
+      "v": 44,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 23,
+      "u_port": 6,
+      "v": 40,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 24,
+      "u_port": 3,
+      "v": 25,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 24,
+      "u_port": 4,
+      "v": 29,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 24,
+      "u_port": 5,
+      "v": 43,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 25,
+      "u_port": 4,
+      "v": 34,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 25,
+      "u_port": 5,
+      "v": 43,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 25,
+      "u_port": 6,
+      "v": 46,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 27,
+      "u_port": 2,
+      "v": 31,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 27,
+      "u_port": 3,
+      "v": 35,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 28,
+      "u_port": 4,
+      "v": 44,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 29,
+      "u_port": 4,
+      "v": 30,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 29,
+      "u_port": 5,
+      "v": 45,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 29,
+      "u_port": 6,
+      "v": 47,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 31,
+      "u_port": 4,
+      "v": 46,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 32,
+      "u_port": 6,
+      "v": 33,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 33,
+      "u_port": 5,
+      "v": 44,
+      "v_port": 6
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 35,
+      "u_port": 4,
+      "v": 38,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 35,
+      "u_port": 5,
+      "v": 41,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 35,
+      "u_port": 6,
+      "v": 42,
+      "v_port": 2
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 36,
+      "u_port": 4,
+      "v": 40,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 37,
+      "u_port": 2,
+      "v": 39,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 37,
+      "u_port": 3,
+      "v": 49,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 38,
+      "u_port": 4,
+      "v": 42,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 38,
+      "u_port": 5,
+      "v": 50,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 39,
+      "u_port": 4,
+      "v": 40,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 39,
+      "u_port": 5,
+      "v": 49,
+      "v_port": 5
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 41,
+      "u_port": 3,
+      "v": 42,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 43,
+      "u_port": 4,
+      "v": 47,
+      "v_port": 4
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 46,
+      "u_port": 4,
+      "v": 48,
+      "v_port": 3
+    },
+    {
+      "bandwidth_mbps": 90.0,
+      "delay_ms": 2.0,
+      "u": 46,
+      "u_port": 5,
+      "v": 50,
+      "v_port": 6
+    }
+  ],
+  "name": "50node_bw90",
+  "node_count": 50,
+  "nodes": [
+    {
+      "dpid": 1,
+      "host": "h1",
+      "host_ip": "10.0.0.1/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 1,
+      "simulator_node_id": 0,
+      "switch": "s1"
+    },
+    {
+      "dpid": 2,
+      "host": "h2",
+      "host_ip": "10.0.0.2/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 2,
+      "simulator_node_id": 1,
+      "switch": "s2"
+    },
+    {
+      "dpid": 3,
+      "host": "h3",
+      "host_ip": "10.0.0.3/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 3,
+      "simulator_node_id": 2,
+      "switch": "s3"
+    },
+    {
+      "dpid": 4,
+      "host": "h4",
+      "host_ip": "10.0.0.4/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 4,
+      "simulator_node_id": 3,
+      "switch": "s4"
+    },
+    {
+      "dpid": 5,
+      "host": "h5",
+      "host_ip": "10.0.0.5/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 5,
+      "simulator_node_id": 4,
+      "switch": "s5"
+    },
+    {
+      "dpid": 6,
+      "host": "h6",
+      "host_ip": "10.0.0.6/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 6,
+      "simulator_node_id": 5,
+      "switch": "s6"
+    },
+    {
+      "dpid": 7,
+      "host": "h7",
+      "host_ip": "10.0.0.7/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 7,
+      "simulator_node_id": 6,
+      "switch": "s7"
+    },
+    {
+      "dpid": 8,
+      "host": "h8",
+      "host_ip": "10.0.0.8/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 8,
+      "simulator_node_id": 7,
+      "switch": "s8"
+    },
+    {
+      "dpid": 9,
+      "host": "h9",
+      "host_ip": "10.0.0.9/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 9,
+      "simulator_node_id": 8,
+      "switch": "s9"
+    },
+    {
+      "dpid": 10,
+      "host": "h10",
+      "host_ip": "10.0.0.10/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 10,
+      "simulator_node_id": 9,
+      "switch": "s10"
+    },
+    {
+      "dpid": 11,
+      "host": "h11",
+      "host_ip": "10.0.0.11/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 11,
+      "simulator_node_id": 10,
+      "switch": "s11"
+    },
+    {
+      "dpid": 12,
+      "host": "h12",
+      "host_ip": "10.0.0.12/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 12,
+      "simulator_node_id": 11,
+      "switch": "s12"
+    },
+    {
+      "dpid": 13,
+      "host": "h13",
+      "host_ip": "10.0.0.13/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 13,
+      "simulator_node_id": 12,
+      "switch": "s13"
+    },
+    {
+      "dpid": 14,
+      "host": "h14",
+      "host_ip": "10.0.0.14/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 14,
+      "simulator_node_id": 13,
+      "switch": "s14"
+    },
+    {
+      "dpid": 15,
+      "host": "h15",
+      "host_ip": "10.0.0.15/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 15,
+      "simulator_node_id": 14,
+      "switch": "s15"
+    },
+    {
+      "dpid": 16,
+      "host": "h16",
+      "host_ip": "10.0.0.16/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 16,
+      "simulator_node_id": 15,
+      "switch": "s16"
+    },
+    {
+      "dpid": 17,
+      "host": "h17",
+      "host_ip": "10.0.0.17/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 17,
+      "simulator_node_id": 16,
+      "switch": "s17"
+    },
+    {
+      "dpid": 18,
+      "host": "h18",
+      "host_ip": "10.0.0.18/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 18,
+      "simulator_node_id": 17,
+      "switch": "s18"
+    },
+    {
+      "dpid": 19,
+      "host": "h19",
+      "host_ip": "10.0.0.19/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 19,
+      "simulator_node_id": 18,
+      "switch": "s19"
+    },
+    {
+      "dpid": 20,
+      "host": "h20",
+      "host_ip": "10.0.0.20/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 20,
+      "simulator_node_id": 19,
+      "switch": "s20"
+    },
+    {
+      "dpid": 21,
+      "host": "h21",
+      "host_ip": "10.0.0.21/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 21,
+      "simulator_node_id": 20,
+      "switch": "s21"
+    },
+    {
+      "dpid": 22,
+      "host": "h22",
+      "host_ip": "10.0.0.22/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 22,
+      "simulator_node_id": 21,
+      "switch": "s22"
+    },
+    {
+      "dpid": 23,
+      "host": "h23",
+      "host_ip": "10.0.0.23/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 23,
+      "simulator_node_id": 22,
+      "switch": "s23"
+    },
+    {
+      "dpid": 24,
+      "host": "h24",
+      "host_ip": "10.0.0.24/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 24,
+      "simulator_node_id": 23,
+      "switch": "s24"
+    },
+    {
+      "dpid": 25,
+      "host": "h25",
+      "host_ip": "10.0.0.25/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 25,
+      "simulator_node_id": 24,
+      "switch": "s25"
+    },
+    {
+      "dpid": 26,
+      "host": "h26",
+      "host_ip": "10.0.0.26/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 26,
+      "simulator_node_id": 25,
+      "switch": "s26"
+    },
+    {
+      "dpid": 27,
+      "host": "h27",
+      "host_ip": "10.0.0.27/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 27,
+      "simulator_node_id": 26,
+      "switch": "s27"
+    },
+    {
+      "dpid": 28,
+      "host": "h28",
+      "host_ip": "10.0.0.28/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 28,
+      "simulator_node_id": 27,
+      "switch": "s28"
+    },
+    {
+      "dpid": 29,
+      "host": "h29",
+      "host_ip": "10.0.0.29/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 29,
+      "simulator_node_id": 28,
+      "switch": "s29"
+    },
+    {
+      "dpid": 30,
+      "host": "h30",
+      "host_ip": "10.0.0.30/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 30,
+      "simulator_node_id": 29,
+      "switch": "s30"
+    },
+    {
+      "dpid": 31,
+      "host": "h31",
+      "host_ip": "10.0.0.31/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 31,
+      "simulator_node_id": 30,
+      "switch": "s31"
+    },
+    {
+      "dpid": 32,
+      "host": "h32",
+      "host_ip": "10.0.0.32/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 32,
+      "simulator_node_id": 31,
+      "switch": "s32"
+    },
+    {
+      "dpid": 33,
+      "host": "h33",
+      "host_ip": "10.0.0.33/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 33,
+      "simulator_node_id": 32,
+      "switch": "s33"
+    },
+    {
+      "dpid": 34,
+      "host": "h34",
+      "host_ip": "10.0.0.34/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 34,
+      "simulator_node_id": 33,
+      "switch": "s34"
+    },
+    {
+      "dpid": 35,
+      "host": "h35",
+      "host_ip": "10.0.0.35/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 35,
+      "simulator_node_id": 34,
+      "switch": "s35"
+    },
+    {
+      "dpid": 36,
+      "host": "h36",
+      "host_ip": "10.0.0.36/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 36,
+      "simulator_node_id": 35,
+      "switch": "s36"
+    },
+    {
+      "dpid": 37,
+      "host": "h37",
+      "host_ip": "10.0.0.37/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 37,
+      "simulator_node_id": 36,
+      "switch": "s37"
+    },
+    {
+      "dpid": 38,
+      "host": "h38",
+      "host_ip": "10.0.0.38/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 38,
+      "simulator_node_id": 37,
+      "switch": "s38"
+    },
+    {
+      "dpid": 39,
+      "host": "h39",
+      "host_ip": "10.0.0.39/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 39,
+      "simulator_node_id": 38,
+      "switch": "s39"
+    },
+    {
+      "dpid": 40,
+      "host": "h40",
+      "host_ip": "10.0.0.40/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 40,
+      "simulator_node_id": 39,
+      "switch": "s40"
+    },
+    {
+      "dpid": 41,
+      "host": "h41",
+      "host_ip": "10.0.0.41/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 41,
+      "simulator_node_id": 40,
+      "switch": "s41"
+    },
+    {
+      "dpid": 42,
+      "host": "h42",
+      "host_ip": "10.0.0.42/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 42,
+      "simulator_node_id": 41,
+      "switch": "s42"
+    },
+    {
+      "dpid": 43,
+      "host": "h43",
+      "host_ip": "10.0.0.43/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 43,
+      "simulator_node_id": 42,
+      "switch": "s43"
+    },
+    {
+      "dpid": 44,
+      "host": "h44",
+      "host_ip": "10.0.0.44/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 44,
+      "simulator_node_id": 43,
+      "switch": "s44"
+    },
+    {
+      "dpid": 45,
+      "host": "h45",
+      "host_ip": "10.0.0.45/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 45,
+      "simulator_node_id": 44,
+      "switch": "s45"
+    },
+    {
+      "dpid": 46,
+      "host": "h46",
+      "host_ip": "10.0.0.46/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 46,
+      "simulator_node_id": 45,
+      "switch": "s46"
+    },
+    {
+      "dpid": 47,
+      "host": "h47",
+      "host_ip": "10.0.0.47/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 47,
+      "simulator_node_id": 46,
+      "switch": "s47"
+    },
+    {
+      "dpid": 48,
+      "host": "h48",
+      "host_ip": "10.0.0.48/24",
+      "host_port": 1,
+      "is_dc": false,
+      "is_source": true,
+      "matlab_node_id": 48,
+      "simulator_node_id": 47,
+      "switch": "s48"
+    },
+    {
+      "dpid": 49,
+      "host": "h49",
+      "host_ip": "10.0.0.49/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 49,
+      "simulator_node_id": 48,
+      "switch": "s49"
+    },
+    {
+      "dpid": 50,
+      "host": "h50",
+      "host_ip": "10.0.0.50/24",
+      "host_port": 1,
+      "is_dc": true,
+      "is_source": false,
+      "matlab_node_id": 50,
+      "simulator_node_id": 49,
+      "switch": "s50"
+    }
+  ],
+  "physical_link_count": 88,
+  "schema_version": 1,
+  "source": {
+    "capacity_provenance": "uniform experiment parameter from configs/env.yaml",
+    "connectivity": "reconstructed from adjacency matrix",
+    "delay_provenance": "uniform experiment parameter; MAT has no geographic latency",
+    "file": "topo/50node.mat",
+    "sha256": "8c081d1f083098e9b0acec6ca0f9b3d6500196ee8d7ef139ae1d2b8ecc2104c9"
+  },
+  "source_nodes_1based": [
+    1,
+    2,
+    3,
+    7,
+    8,
+    9,
+    10,
+    13,
+    15,
+    16,
+    18,
+    21,
+    27,
+    28,
+    30,
+    31,
+    34,
+    36,
+    37,
+    40,
+    41,
+    42,
+    43,
+    47,
+    48
+  ]
+}

@@ -1,0 +1,32 @@
+role_marl_train:
+  episodes: 200
+  reconfig_interval: 10
+  warmup_episodes: 0
+  max_steps: 600
+  train_every: 1
+  updates_per_train: 1
+  batch_size: 64
+  save_every: 50
+  training_algorithm: independent_dqn
+
+qmix:
+  embed_dim: 32
+  lr: 0.001
+
+role_agents:
+  hidden_dim: 64
+  lr: 0.001
+  epsilon: 0.20
+  epsilon_final: 0.05
+  epsilon_decay_episodes: 200
+
+reward:
+  hotspot: 2.0
+  delay: 1.0
+  delay_scale: 10.0
+  migration: 0.50
+  reroute: 0.30
+  tree: 0.10
+  failure: 2.0
+  noop: 0.05
+  coord: 0.20

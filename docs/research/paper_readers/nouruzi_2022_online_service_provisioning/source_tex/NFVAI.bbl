@@ -1,0 +1,273 @@
+\begin{thebibliography}{10}
+
+\bibitem{series2015imt}
+M.~Series, ``{IMT} vision--framework and overall objectives of the future
+  development of imt for 2020 and beyond,'' {\em Recommendation ITU},
+  pp.~2083--0, Sep. 2015.
+
+\bibitem{cziva2017container}
+R.~Cziva and D.~P. Pezaros, ``Container network functions: {B}ringing {NFV} to
+  the network edge,'' {\em IEEE Communications Magazine}, vol.~55, no.~6,
+  pp.~24--31, June. 2017.
+
+\bibitem{8403657}
+J.~{Pei}, P.~{Hong}, and D.~{Li}, ``Virtual network function selection and
+  chaining based on deep learning in {SDN} and {NFV}-enabled networks,'' in
+  {\em Proc. IEEE International Conference on Communications Workshops (ICC
+  Workshops)}, Kansas City, USA, May. 2018, pp. {1-6}.
+
+\bibitem{8382166}
+Q.~{Mao}, F.~{Hu}, and Q.~{Hao}, ``Deep learning for intelligent wireless
+  networks: A comprehensive survey,'' {\em IEEE Communications Surveys
+  Tutorials}, vol.~20, no.~4, pp.~2595--2621, Jun. 2018.
+
+\bibitem{herrera2016resource}
+J.~G. Herrera and J.~F. Botero, ``Resource allocation in {NFV}: A comprehensive
+  survey,'' {\em IEEE Transactions on Network and Service Management}, vol.~13,
+  no.~3, pp.~518--532, August. 2016.
+
+\bibitem{hamann2019path}
+M.~Hamann and M.~{F}ischer, ``Path-based optimization of {NFV}-resource
+  allocation in {SDN} networks,'' in {\em Proc. IEEE International Conference
+  on Communications (ICC)}, Shanghai, China, July. 2019, pp. {1-6}.
+
+\bibitem{10.1145/3326285.3329056}
+Y.~Xiao, Q.~Zhang, F.~Liu, J.~Wang, M.~Zhao, Z.~Zhang, and J.~Zhang,
+  ``{{NFV}deep}: Adaptive online service function chain deployment with deep
+  reinforcement learning,'' in {\em Proc. International Symposium on Quality of
+  Service (IWQoS)}, Phoenix, Arizona, USA, June. 2019, pp. {1–10}.
+
+\bibitem{zhang2019deep}
+C.~Zhang, H.~Zhang, J.~Qiao, D.~Yuan, and M.~Zhang, ``Deep transfer learning
+  for intelligent cellular traffic prediction based on cross-domain big data,''
+  {\em IEEE Journal on Selected Areas in Communications}, vol.~37, no.~6,
+  pp.~1389--1401, March. 2019.
+
+\bibitem{gholipoor2020e2e}
+N.~Gholipoor, H.~Saeedi, N.~Mokari, and E.~Jorswieck, ``{E2E} {QoS} guarantee
+  for the tactile internet via joint {NFV} and radio resource allocation,''
+  {\em IEEE Transactions on Network and Service Management}, June. 2020.
+
+\bibitem{alleg2017delay}
+A.~Alleg, T.~Ahmed, M.~Mosbah, R.~Riggio, and R.~Boutaba, ``Delay-aware {VNF}
+  placement and chaining based on a flexible resource allocation approach,'' in
+  {\em Proc. IEEE International Conference on Network and Service Management
+  (CNSM)}, Tokyo, Japan, USA, Nov. 2017, pp. {1-7}.
+
+\bibitem{ren2020efficient}
+H.~Ren, Z.~Xu, W.~Liang, Q.~Xia, P.~Zhou, O.~F. Rana, A.~Galis, and G.~Wu,
+  ``Efficient algorithms for delay-aware {NFV}-enabled multicasting in mobile
+  edge clouds with resource sharing,'' {\em IEEE Transactions on Parallel and
+  Distributed Systems}, March. 2020.
+
+\bibitem{kamgang2020slice}
+I.~R.~D. Kamgang, G.~E.~M. Zhioua, and N.~Tabbane, ``A slice-based
+  decentralized {NFV} framework for an {E}nd-to-{E}nd {QoS}-based dynamic
+  resource allocation,'' {\em Journal of Ambient Intelligence and Humanized
+  Computing}, pp.~1--19, Jan. 2020.
+
+\bibitem{mijumbi2015design}
+R.~Mijumbi, J.~Serrat, J.-L. Gorricho, N.~Bouten, F.~De~Turck, and S.~Davy,
+  ``Design and evaluation of algorithms for mapping and scheduling of virtual
+  network functions,'' in {\em Proc. IEEE Conference on Network Softwarization
+  (NetSoft)}, London, UK, April. 2015, pp. {1--9}.
+
+\bibitem{nguyen2019practical}
+T.-H. Nguyen, J.~Lee, and M.~Yoo, ``A practical model for optimal placement of
+  virtual network functions,'' in {\em Proc. IEEE International Conference on
+  Information Networking (ICOIN)}, Kuala Lumpur, Malaysia, May. 2019, pp.
+  {239--241}.
+
+\bibitem{chen2018multi}
+X.~Chen, W.~Ni, T.~Chen, I.~B. Collings, X.~Wang, R.~P. Liu, and G.~B.
+  Giannakis, ``Multi-timescale online optimization of network function
+  virtualization for service chaining,'' {\em IEEE Transactions on Mobile
+  Computing}, vol.~18, no.~12, pp.~2899--2912, Dec. 2018.
+
+\bibitem{mao2018deep}
+Q.~Mao, F.~Hu, and Q.~Hao, ``Deep learning for intelligent wireless networks: A
+  comprehensive survey,'' {\em IEEE Communications Surveys \& Tutorials},
+  vol.~20, no.~4, pp.~2595--2621, 2018.
+
+\bibitem{li2018deep}
+J.~Li, H.~Gao, T.~Lv, and Y.~Lu, ``Deep reinforcement learning based
+  computation offloading and resource allocation for {MEC},'' in {\em Proc.
+  IEEE Wireless Communications and Networking Conference (WCNC)}, Barcelona,
+  Spain, June. 2018, pp. {1--6}.
+
+\bibitem{ayoubi2018machine}
+S.~Ayoubi, N.~Limam, M.~A. Salahuddin, N.~Shahriar, R.~Boutaba,
+  F.~Estrada-Solano, and O.~M. Caicedo, ``Machine learning for cognitive
+  network management,'' {\em IEEE Communications Magazine}, vol.~56, no.~1,
+  pp.~158--165, Jan. 2018.
+
+\bibitem{zorello2018improving}
+L.~M.~M. Zorello, M.~G.~T. Vieira, R.~A.~G. Tejos, M.~A.~T. Rojas, C.~Meirosu,
+  and T.~C.~M. de~Brito~Carvalho, ``Improving energy efficiency in {NFV} clouds
+  with machine learning,'' in {\em Proc. IIEEE International Conference on
+  Cloud Computing (CLOUD)}, San Francisco, CA, USA, July. 2018, pp. {710--717}.
+
+\bibitem{ding2019deep}
+R.~{Ding}, Y.~{Xu}, F.~{Gao}, X.~{Shen}, and W.~{Wu}, ``Deep reinforcement
+  learning for router selection in network with heavy traffic,'' {\em IEEE
+  Access}, vol.~7, pp.~37109--37120, March. 2019.
+
+\bibitem{pei2018virtual}
+J.~Pei, P.~Hong, and D.~Li, ``Virtual network function selection and chaining
+  based on deep learning in {SDN} and {NFV}-enabled networks,'' in {\em Proc.
+  IEEE International Conference on Communications Workshops (ICC Workshops)},
+  Kansas City, MO, USA, July. 2018, pp. {1--6}.
+
+\bibitem{zhou2019multi}
+J.~Zhou, P.~Hong, and J.~Pei, ``Multi-task deep learning based dynamic service
+  function chains routing in {SDN}/{NFV}-enabled networks,'' in {\em Proc. IEEE
+  International Conference on Communications (ICC)}, Shanghai, China, May.
+  2019, pp. {1--6}.
+
+\bibitem{subramanya2019machine}
+T.~ZSubramanya and R.~Riggio, ``Machine learning-driven scaling and placement
+  of virtual network functions at the network edges,'' in {\em Proc. IEEE
+  International Conference on Network Softwarization (NetSoft)}, Paris, France,
+  Aug. 2019, pp. {414--422}.
+
+\bibitem{wu2019resource}
+B.~Wu, J.~Zeng, L.~Ge, S.~Shao, Y.~Tang, and X.~Su, ``Resource allocation
+  optimization in the {NFV}-enabled {MEC} network based on game theory,'' in
+  {\em Proc. IEEE International Conference on Communications (ICC)}, Shanghai,
+  China, July. 2019, pp. {1--7}.
+
+\bibitem{fu2019dynamic}
+X.~Fu, F.~R. Yu, J.~Wang, Q.~Qi, and J.~Liao, ``Dynamic service function chain
+  embedding for {NFV}-enabled {IoT}: A deep reinforcement learning approach,''
+  {\em IEEE Transactions on Wireless Communications}, Oct. 2019.
+
+\bibitem{pham2017virtual}
+C.~Pham, N.~H. Tran, and C.~S. Hong, ``Virtual network function scheduling: A
+  matching game approach,'' {\em IEEE Communications Letters}, vol.~22, no.~1,
+  pp.~69--72, Aug. 2017.
+
+\bibitem{li2020finedge}
+M.~Li, Q.~Zhang, and F.~Liu, ``Finedge: {A} dynamic cost-efficient edge
+  resource management platform for {NFV} network,'' in {\em Proc. IEEE/ACM
+  International Symposium on Quality of Service (IWQoS)}, Hang Zhou, China,
+  Oct. 2020, pp. {1--10}.
+
+\bibitem{ning2020deep}
+Z.~Ning, N.~Wang, and R.~Tafazolli, ``Deep reinforcement learning for
+  {NFV}-based {S}ervice {F}unction {C}haining in {M}ulti-{S}ervice
+  {N}etworks,'' in {\em Proc. IEEE International Conference on High Performance
+  Switching and Routing (HPSR)}, Newark, NJ, USA, May. 2020, pp. {1--6}.
+
+\bibitem{pei2019optimal}
+J.~Pei, P.~Hong, M.~Pan, J.~Liu, and J.~Zhou, ``Optimal {VNF} placement via
+  deep reinforcement learning in {SDN}/{NFV}-enabled networks,'' {\em IEEE
+  Journal on Selected Areas in Communications}, vol.~38, no.~2, pp.~263--278,
+  Dec. 2019.
+
+\bibitem{qu2020dynamic}
+K.~Qu, W.~Zhuang, Q.~Ye, X.~Shen, X.~Li, and J.~Rao, ``Dynamic flow migration
+  for embedded services in {SDN}/{NFV}-enabled 5{G} core networks,'' {\em IEEE
+  Transactions on Communications}, vol.~68, no.~4, pp.~2394--2408, Jan. 2020.
+
+\bibitem{jia2018online}
+Y.~Jia, C.~Wu, Z.~Li, F.~Le, and A.~Liu, ``Online scaling of {NFV} service
+  chains across geo-distributed datacenters,'' {\em IEEE/ACM Transactions on
+  Networking}, vol.~26, no.~2, pp.~699--710, 2018.
+
+\bibitem{huang2019maximizing}
+M.~Huang, W.~Liang, Y.~Ma, and S.~Guo, ``Maximizing throughput of
+  delay-sensitive {NFV}-enabled request admissions via virtualized network
+  function placement,'' {\em IEEE Transactions on Cloud Computing}, 2019.
+
+\bibitem{xu2018throughput}
+Z.~Xu, W.~Liang, A.~Galis, Y.~Ma, Q.~Xia, and W.~Xu, ``Throughput optimization
+  for admitting {NFV}-enabled requests in cloud networks,'' {\em Computer
+  Networks}, vol.~143, pp.~15--29, 2018.
+
+\bibitem{thirdgeneration2017system}
+{3GPP, TS 28.530}, ``Technical specification group services and system aspects;
+  management and orchestration; {C}oncepts, use cases and requirements,'' Sep.
+  2019.
+
+\bibitem{etsi2014gs}
+N.~ETSI, ``{GS} {NFV}-{MAN} 001 v1. 1.1 network functions virtualisation
+  ({NFV}); management and orchestration,'' tech. rep., Dec. 2014.
+
+\bibitem{hong2018resource}
+P.~Hong, K.~Xue, D.~Li, {\em et~al.}, ``Resource aware routing for service
+  function chains in {SDN} and {NFV}-enabled network,'' {\em IEEE Transactions
+  on Services Computing}, June. 2018.
+
+\bibitem{savi2019impact}
+M.~Savi, M.~Tornatore, and G.~Verticale, ``Impact of processing-resource
+  sharing on the placement of chained virtual network functions,'' {\em IEEE
+  Transactions on Cloud Computing}, May. 2019.
+
+\bibitem{liu2018microboxes}
+G.~Liu, Y.~Ren, M.~Yurchenko, K.~Ramakrishnan, and T.~Wood, ``Microboxes: high
+  performance {NFV} with customizable, asynchronous {TCP} stacks and dynamic
+  subscriptions,'' in {\em Proc. Conference of the ACM Special Interest Group
+  on Data Communication (SIGCOMM)}, Budapest Hungary, Aug. 2018, pp.
+  {504--517}.
+
+\bibitem{tajiki2018joint}
+M.~M. Tajiki, S.~Salsano, L.~Chiaraviglio, M.~Shojafar, and B.~Akbari, ``Joint
+  energy efficient and {QoS}-aware path allocation and {VNF} placement for
+  service function chaining,'' {\em IEEE Transactions on Network and Service
+  Management}, vol.~16, no.~1, pp.~374--388, Oct. 2018.
+
+\bibitem{ebrahimi2020joint}
+S.~Ebrahimi, A.~Zakeri, B.~Akbari, and N.~Mokari, ``Joint resource and
+  admission management for slice-enabled networks,'' in {\em Proc. EEE/IFIP
+  Network Operations and Management Symposium (NOMS)}, Budapest, Hungary, June.
+  2020, pp. {1--7}.
+
+\bibitem{miotto2019adaptive}
+G.~Miotto, M.~C. Luizelli, W.~L. da~Costa~Cordeiro, and L.~P. Gaspary,
+  ``Adaptive placement \& chaining of virtual network functions with {NFV},''
+  {\em Journal of Internet Services and Applications}, vol.~10, no.~1,
+  pp.~1--19, Feb. 2019.
+
+\bibitem{sutton2018reinforcement}
+R.~S. Sutton and A.~G. Barto, {\em Reinforcement learning: An introduction}.
+\newblock MIT press, 2018.
+
+\bibitem{tokic2011value}
+M.~Tokic and G.~Palm, ``Value-difference based exploration: adaptive control
+  between epsilon-greedy and softmax,'' in {\em Annual conference on artificial
+  intelligence}, pp.~335--346, Springer, 2011.
+
+\bibitem{van2007reinforcement}
+H.~Van~Hasselt and M.~A. Wiering, ``Reinforcement learning in continuous action
+  spaces,'' in {\em 2007 IEEE International Symposium on Approximate Dynamic
+  Programming and Reinforcement Learning}, pp.~272--279, IEEE, 2007.
+
+\bibitem{leivadeas2019vnf}
+A.~Leivadeas, G.~Kesidis, M.~Ibnkahla, and I.~Lambadaris, ``{VNF} placement
+  optimization at the edge and cloud,'' {\em Future Internet}, vol.~11, no.~3,
+  p.~69, March. 2019.
+
+\bibitem{sheikhzadeh2021ai}
+S.~Sheikhzadeh, M.~Pourghasemian, M.~R. Javan, N.~Mokari, and E.~A. Jorswieck,
+  ``A{I}-based secure {NOMA} and cognitive radio enabled green communications:
+  Channel state information and battery value uncertainties,'' {\em arXiv
+  preprint arXiv:2106.15964}, 2021.
+
+\bibitem{li2020cost}
+Y.~Li, L.~Gao, S.~Xu, Q.~Ou, X.~Yuan, F.~Qi, S.~Guo, and X.~Qiu,
+  ``Cost-and-{Q}o{S}-based {NFV} service function chain mapping mechanism,'' in
+  {\em NOMS 2020-2020 IEEE/IFIP Network Operations and Management Symposium},
+  pp.~1--9, IEEE, 2020.
+
+\bibitem{agarwal2018joint}
+S.~Agarwal, F.~Malandrino, C.-F. Chiasserini, and S.~De, ``Joint {VNF}
+  placement and {CPU} allocation in 5{G},'' in {\em Proc. IEEE INFOCOM
+  Conference on Computer Communications}, Honolulu, HI, USA, Oct. 2018, pp.
+  {1943--1951}.
+
+\bibitem{ali2021}
+A.~Nouruzi, ``Code of {NFV} {P}aper, {DOI}:
+  https://dx.doi.org/10.21227/r1j8-tc84,
+  https://ieee-dataport.org/documents/anazmrjnm2021files,''
+
+\end{thebibliography}

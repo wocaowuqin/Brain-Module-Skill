@@ -1,0 +1,25 @@
+multiagent_orchestration:
+  brain:
+    policy: rule
+    default_priority: 1.0
+    max_reconfiguration_delay_ms: 100.0
+  specialists:
+    deployment:
+      skills:
+        - hrl_sft_mapping
+    migration:
+      skills:
+        - plan_vnf_migration
+    reroute:
+      skills:
+        - plan_tree_reroute
+  observation:
+    top_k_risky_sfts: 3
+    node_util_threshold: 0.80
+    link_util_threshold: 0.80
+  execution:
+    # Migration and rerouting are proposed from one immutable view. Until a
+    # true cross-operation transaction exists, execute only the safer winner.
+    joint_reconfiguration: single_safe_action
+    revalidate_before_apply: true
+    require_state_fingerprint: true

@@ -1,0 +1,11 @@
+mode: rule
+epsilon: 0.1
+epsilon_decay: 0.995
+ppo_learning_rate: 0.0003
+reward:
+  sla_improvement: 1.0
+  resource_pressure: -1.0
+  silent_observation: 0.05
+module_cooldown_steps: 3
+logs_dir: logs/brain_ppo
+demos_dir: demos

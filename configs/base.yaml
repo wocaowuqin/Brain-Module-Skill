@@ -1,0 +1,47 @@
+# configs/base.yaml - 路径适配版
+
+# 1. 项目基础信息
+project:
+  name: "HIRL-MSFC-CE"
+  description: "Hierarchical Reinforcement Learning for Service Function Chaining"
+  base_dir: "./artifacts/runs/hrl"
+
+# 2. 🔥 [关键] 路径配置 (已更新为您提供的绝对路径)
+path:
+  # 程序会自动补全为: 项目根目录/data/input_dir
+  input_dir: "data/input_dir"
+  expert_data_dir: "artifacts/runs/hrl/expert"
+  ckpt_dir: "artifacts/runs/hrl/checkpoints"
+  log_dir: "artifacts/runs/hrl/logs"
+  failure_output_dir: "artifacts/runs/hrl/failures"
+
+# 3. 资源容量
+capacities:
+  cpu: 55.0
+  memory: 45.0
+  bandwidth: 90.0
+  bandwidth_model: directed
+
+# 4. 环境参数
+environment:
+  use_gnn: true
+  max_steps_per_episode: 200
+
+# 5. 评估配置
+eval:
+  device: 'cpu'
+  seed: 42
+  deterministic: true
+
+# 6. 训练配置
+training:
+  learning_rate: 0.001
+  gamma: 0.99
+  batch_size: 32
+  buffer_size: 10000
+
+# 7. 日志格式
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "artifacts/runs/hrl/training.log"

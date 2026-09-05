@@ -1,0 +1,32 @@
+{
+  "version": "sft_qos_v1",
+  "classes": {
+    "Q0_REALTIME": {
+      "weight": 0.5,
+      "delay_bound_ms": 100.0,
+      "delay_compliance_ratio": 0.99,
+      "jitter_bound_ms": 50.0,
+      "packet_loss_bound": 0.001,
+      "dscp": 46,
+      "priority": 3
+    },
+    "Q1_INTERACTIVE": {
+      "weight": 0.3,
+      "delay_bound_ms": 400.0,
+      "delay_compliance_ratio": 0.99,
+      "jitter_bound_ms": 50.0,
+      "packet_loss_bound": 0.001,
+      "dscp": 34,
+      "priority": 2
+    },
+    "Q2_ELASTIC": {
+      "weight": 0.2,
+      "delay_bound_ms": 1000.0,
+      "delay_compliance_ratio": 0.99,
+      "jitter_bound_ms": null,
+      "packet_loss_bound": 0.001,
+      "dscp": 0,
+      "priority": 1
+    }
+  }
+}

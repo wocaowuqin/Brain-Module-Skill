@@ -1,0 +1,16 @@
+[Unit]
+Description=Ryu SFT multicast and rerouting controller
+After=network-online.target openvswitch-switch.service
+Wants=network-online.target
+Requires=openvswitch-switch.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ryu-manager-compat --observe-links --ofp-tcp-listen-port 6653 --wsapi-port 8080 /mnt/c/Users/11353/Desktop/hrl_marl_reconfig_starter/sdn/ryu_sft_controller.py
+Restart=on-failure
+RestartSec=2
+LimitNOFILE=65536
+Environment=PYTHONWARNINGS=ignore::DeprecationWarning
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+experiment: migration_exp_v1
+split:
+  strategy: calendar_day
+  train_days: 7
+  test_days: 1
+baselines:
+  - no_migration
+  - reactive_threshold
+  - oracle_future
+  - lifecycle_aware_wqmix
+training:
+  wqmix_safety_guard: false
+metrics:
+  - acceptance_rate
+  - invalid_migration_rate_30s
+  - migration_interruption_time_ms
+  - cluster_load_std_reduction

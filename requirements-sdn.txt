@@ -1,0 +1,5 @@
+# Install inside the Linux/WSL Mininet environment after requirements.txt.
+# Mininet itself should normally come from the distribution package.
+-r requirements.txt
+ryu>=4.34,<5
+eventlet>=0.33,<1

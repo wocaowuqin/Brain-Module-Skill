@@ -1,0 +1,18 @@
+{
+  "version": "sft_vnf_catalog_v1",
+  "notes": [
+    "Resource coefficients are synthetic parameters inherited from the current dataset generator.",
+    "Names are this experiment's semantic mapping, not a universal standards mapping.",
+    "Processing delay and throughput must be calibrated on the Mininet/NFV implementation."
+  ],
+  "types": {
+    "0": {"name": "firewall", "cpu_per_mbps": 2.1757128979, "memory_per_mbps": 1.0684785459, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "1": {"name": "nat", "cpu_per_mbps": 0.3274716899, "memory_per_mbps": 1.6721203161, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "2": {"name": "proxy_cache", "cpu_per_mbps": 0.6910002370, "memory_per_mbps": 1.8464142310, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "3": {"name": "load_balancer", "cpu_per_mbps": 0.4019571409, "memory_per_mbps": 1.3093039224, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "4": {"name": "wan_optimizer", "cpu_per_mbps": 0.8042619870, "memory_per_mbps": 1.6608590934, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "5": {"name": "dpi_ids", "cpu_per_mbps": 2.8355509418, "memory_per_mbps": 1.0949429637, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "6": {"name": "vpn_ipsec", "cpu_per_mbps": 1.6453219870, "memory_per_mbps": 0.2962370776, "stateful": true, "allowed_location": "dc", "traffic_ratio": 1.0},
+    "7": {"name": "traffic_monitor", "cpu_per_mbps": 0.9833076439, "memory_per_mbps": 0.7547357247, "stateful": false, "allowed_location": "dc", "traffic_ratio": 1.0}
+  }
+}

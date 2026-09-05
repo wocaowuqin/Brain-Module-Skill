@@ -1,0 +1,21 @@
+role_marl:
+  agent_mode: rule
+  top_k: 3
+  node_util_threshold: 0.80
+  link_util_threshold: 0.80
+  delay_threshold: null
+  min_risk_score: 0.0
+  min_action_gain: 0.0
+  trainable:
+    hidden_dim: 64
+    lr: 0.001
+    epsilon: 0.10
+    gamma: 0.95
+    replay_capacity: 5000
+    batch_size: 64
+
+coordinator:
+  migration_cost: 0.15
+  reroute_cost_per_extra_edge: 0.08
+  delay_penalty_weight: 0.05
+  execute_both_margin: 0.10
